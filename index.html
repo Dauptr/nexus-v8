@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS OS V8.0 [OMNI] | Cyberpunk Operating System</title>
+  <meta name="description" content="NEXUS OS - A futuristic cyberpunk-themed operating system interface with AI-powered features, IDE, chat, and more.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+  <style>
+    :root {
+      --bg: #030303;
+      --neon-cyan: #00f3ff;
+      --neon-pink: #ff00ff;
+      --neon-green: #0aff00;
+      --neon-orange: #ff6b00;
+      --neon-purple: #a855f7;
+      --glass: rgba(10, 15, 20, 0.85);
+      --border: rgba(0, 243, 255, 0.2);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      color: #e0e0e0;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px);
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.3;
+    }
+
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      z-index: 10;
+    }
+
+    .glass-panel {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    /* HUD & NAV */
+    .hud-header {
+      height: 45px;
+      background: rgba(0,0,0,0.95);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 15px;
+      font-size: 10px;
+      color: var(--neon-cyan);
+      z-index: 50;
+    }
+
+    .stat-bar {
+      width: 60px;
+      height: 4px;
+      background: #1a1a1a;
+      overflow: hidden;
+    }
+
+    .nav-bar {
+      height: 65px;
+      background: rgba(5,5,5,0.95);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 50;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 16px;
+      color: #666;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .nav-item:hover { color: #999; }
+    .nav-item.active {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 8px var(--neon-cyan);
+    }
+
+    /* COMPONENTS */
+    .cyber-input {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid #333;
+      border-bottom: 1px solid var(--neon-cyan);
+      color: #fff;
+      padding: 12px;
+      width: 100%;
+      font-family: inherit;
+      outline: none;
+      font-size: 13px;
+    }
+
+    .cyber-input::placeholder { color: #555; }
+
+    .cyber-input:focus {
+      border-bottom-color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 243, 255, 0.2);
+    }
+
+    .cyber-btn {
+      background: rgba(0,0,0,0.5);
+      color: var(--neon-cyan);
+      border: 1px solid var(--neon-cyan);
+      padding: 10px 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 12px;
+      transition: 0.2s;
+      clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+    }
+
+    .cyber-btn:hover {
+      background: var(--neon-cyan);
+      color: #000;
+      box-shadow: 0 0 15px var(--neon-cyan);
+    }
+
+    .cyber-btn:active { transform: scale(0.98); }
+
+    .cyber-btn.sm {
+      padding: 6px 12px;
+      font-size: 10px;
+    }
+
+    .cyber-btn.danger {
+      color: var(--neon-pink);
+      border-color: var(--neon-pink);
+    }
+
+    .cyber-btn.danger:hover {
+      background: var(--neon-pink);
+      color: #000;
+    }
+
+    .cyber-btn.orange {
+      color: var(--neon-orange);
+      border-color: var(--neon-orange);
+    }
+
+    .cyber-btn.orange:hover {
+      background: var(--neon-orange);
+      color: #000;
+    }
+
+    .cyber-btn.purple {
+      color: var(--neon-purple);
+      border-color: var(--neon-purple);
+    }
+
+    .cyber-btn.purple:hover {
+      background: var(--neon-purple);
+      color: #000;
+    }
+
+    /* VIEWS */
+    .view {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+      background: rgba(5,5,5,0.8);
+      padding-bottom: 70px;
+    }
+
+    .view.active {
+      display: flex;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* IDE LAYOUT */
+    .ide-layout {
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
+
+    .ide-sidebar {
+      width: 200px;
+      background: #010101;
+      border-right: 1px solid #222;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .ide-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: #050505;
+    }
+
+    .ide-copilot {
+      width: 350px;
+      background: #010101;
+      border-left: 1px solid #222;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .ide-copilot.hidden { display: none; }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      font-size: 11px;
+      color: #888;
+      cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: 0.15s;
+    }
+
+    .file-item:hover {
+      color: #ccc;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .file-item.active {
+      color: var(--neon-cyan);
+      background: rgba(0, 243, 255, 0.05);
+      border-left-color: var(--neon-cyan);
+    }
+
+    .copilot-chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .copilot-msg {
+      font-size: 12px;
+      line-height: 1.5;
+      padding: 10px;
+      border-radius: 4px;
+      white-space: pre-wrap;
+      max-width: 90%;
+    }
+
+    .copilot-msg.ai {
+      background: rgba(0, 243, 255, 0.1);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      align-self: flex-start;
+      color: #9df;
+    }
+
+    .copilot-msg.user {
+      background: rgba(255, 0, 255, 0.1);
+      border: 1px solid rgba(255, 0, 255, 0.2);
+      align-self: flex-end;
+      text-align: right;
+      color: #f9f;
+    }
+
+    /* CONSOLE */
+    .ide-console {
+      height: 150px;
+      background: #000;
+      border-top: 1px solid #333;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .console-log {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-bottom: 1px solid #111;
+      color: #888;
+    }
+
+    .console-log.error {
+      color: var(--neon-pink);
+      background: rgba(255,0,0,0.05);
+    }
+
+    .console-log.warn {
+      color: #fc0;
+      background: rgba(255,200,0,0.05);
+    }
+
+    /* CLI OVERLAY */
+    .cli-overlay {
+      position: fixed;
+      top: 45px;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.98);
+      border-bottom: 1px solid var(--neon-cyan);
+      z-index: 60;
+      padding: 20px;
+      transform: translateY(-100%);
+      transition: transform 0.3s;
+    }
+
+    .cli-overlay.active {
+      transform: translateY(0);
+    }
+
+    .cli-input {
+      background: transparent;
+      border: none;
+      color: var(--neon-cyan);
+      font-size: 18px;
+      outline: none;
+      width: 100%;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* TOAST & MODAL */
+    #toast-container {
+      position: fixed;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: rgba(0, 5, 10, 0.95);
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      padding: 10px 15px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+      animation: toastIn 0.3s ease-out;
+    }
+
+    .toast.error {
+      border-color: var(--neon-pink);
+      color: var(--neon-pink);
+      box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+    }
+
+    .toast.success {
+      border-color: var(--neon-green);
+      color: var(--neon-green);
+      box-shadow: 0 0 15px rgba(10, 255, 0, 0.3);
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 100;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-card {
+      background: #000;
+      border: 1px solid var(--border);
+      width: 90%;
+      max-width: 400px;
+      padding: 20px;
+    }
+
+    /* LOCK SCREEN */
+    .lock-screen {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      backdrop-filter: blur(5px);
+    }
+
+    /* CHAT */
+    .chat-msg { animation: fadeIn 0.3s ease-out; }
+
+    /* SPINNER */
+    .spinner {
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--neon-pink);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* VIDEO */
+    .video-box {
+      border: 1px solid #222;
+      background: #000;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 243, 255, 0.3);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 243, 255, 0.5);
+    }
+
+    /* SELECTION */
+    ::selection {
+      background: rgba(0, 243, 255, 0.3);
+      color: #fff;
+    }
+
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 768px) {
+      body { cursor: default; }
+
+      .ide-copilot {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 20;
+        display: none;
+      }
+
+      .ide-copilot.active { display: flex; }
+
+      .ide-sidebar {
+        display: none;
+      }
+
+      .ide-sidebar.active {
+        display: flex;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 20;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+<div class="scanlines"></div>
+<div id="toast-container"></div>
+
+<!-- CLI OVERLAY -->
+<div id="cli-overlay" class="cli-overlay">
+  <div id="cli-history" class="text-xs text-gray-500 mb-2 max-h-32 overflow-y-auto"></div>
+  <input type="text" id="cli-input" class="cli-input" placeholder="> _ (type /help)" autocomplete="off">
+</div>
+
+<!-- DEPLOY MODAL -->
+<div id="deploy-modal" class="modal-backdrop">
+  <div class="modal-card glass-panel">
+    <h3 class="text-lg font-bold text-cyan-400 mb-2 font-mono">DEPLOY TO CLOUD</h3>
+    <p class="text-xs text-gray-400 mb-4">Host your current project on the cloud instantly.</p>
+    <div class="mb-4">
+      <label class="text-[10px] text-gray-500 font-mono">APP NAME</label>
+      <input type="text" id="deploy-name" class="cyber-input text-xs mt-1" placeholder="my-nexus-app">
+    </div>
+    <div class="flex gap-2">
+      <button onclick="App.drive.deploy()" class="cyber-btn flex-1">DEPLOY</button>
+      <button onclick="$('deploy-modal').style.display='none'" class="cyber-btn danger flex-1">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- IDENTITY SCREEN -->
+<div id="id-screen" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black">
+  <div class="glass-panel w-full max-w-sm relative overflow-hidden p-6 text-center">
+    <div class="avatar w-20 h-20 mx-auto mb-4 bg-black border-2 border-cyan-500 flex items-center justify-center text-4xl shadow-[0_0_20px_rgba(0,243,255,0.3)]" id="gen-avatar">👁️</div>
+    <h1 id="gen-name" class="text-xl font-bold text-white tracking-widest mb-2 font-mono glitch" data-text="GHOST_001">GHOST_001</h1>
+    <div class="p-6 space-y-4">
+      <button onclick="App.auth.gen()" class="cyber-btn w-full text-xs opacity-80 hover:opacity-100">Reroll Identity</button>
+      <button onclick="App.auth.login()" class="cyber-btn purple w-full">Enter System</button>
+    </div>
+    <div class="p-4 border-t border-gray-800 hidden" id="admin-login">
+      <input type="password" id="admin-pass" class="cyber-input text-xs mb-2 text-center" placeholder="ADMIN_PASS">
+      <button onclick="App.auth.admin()" class="cyber-btn danger w-full text-xs">AUTH</button>
+    </div>
+    <div class="text-center p-2">
+      <span onclick="document.getElementById('admin-login').classList.toggle('hidden')" class="text-[9px] text-gray-700 cursor-pointer hover:text-cyan-500 transition-colors">[ SYSTEM ADMIN ]</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN SHELL -->
+<div id="app-main" class="app-shell hidden">
+  <header class="hud-header">
+    <div class="stat-box flex items-center gap-2">
+      <span onclick="App.toggleSidebar()" class="md:hidden text-lg cursor-pointer p-2">☰</span>
+      <span>CPU:</span>
+      <div class="stat-bar"><div id="cpu-fill" class="h-full bg-gradient-to-r from-green-500 to-cyan-500 w-0 transition-all duration-500"></div></div>
+    </div>
+    <div class="text-center">
+      <div class="font-bold tracking-widest text-xs text-cyan-400 font-mono">NEXUS // V8.0 [OMNI]</div>
+      <div id="hud-clock" class="text-[8px] text-gray-500">00:00:00</div>
+    </div>
+    <div class="stat-box justify-end">
+      <span onclick="App.toggleCLI()" class="text-xs text-pink-500 cursor-pointer hover:text-white mr-4 transition-colors">_CLI</span>
+      <span id="net-status" class="text-green-500">● ONLINE</span>
+    </div>
+  </header>
+
+  <div class="view-layer flex-1 relative">
+
+    <!-- CHAT -->
+    <section id="view-global" class="view active">
+      <div class="flex flex-col h-full">
+        <div class="p-2 bg-black/80 border-b border-gray-800 text-xs font-bold text-cyan-400 flex justify-between font-mono">
+          <span>GLOBAL_FREQ</span>
+          <span id="chat-user-count" class="text-pink-500">1 ONLINE</span>
+        </div>
+        <div id="chat-log" class="flex-1 overflow-y-auto p-4 flex flex-col gap-3"></div>
+        <div class="p-3 bg-black/90 border-t border-gray-800 flex gap-2">
+          <input type="text" id="chat-in" class="cyber-input text-xs flex-1" placeholder="Message..." autocomplete="off">
+          <button onclick="App.chat.send()" class="cyber-btn text-xs px-4">SEND</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section id="view-video" class="view p-2">
+      <div class="flex justify-between items-center mb-2 px-2">
+        <h2 class="text-xs font-bold text-pink-500 font-mono">VIDEO UPLINK</h2>
+        <button onclick="App.video.start()" class="cyber-btn text-xs py-1">CAM_ON</button>
+      </div>
+      <div class="video-grid grid grid-cols-2 gap-2 p-2" id="video-grid">
+        <div class="video-box flex items-center justify-center text-gray-700 border-dashed border-2 aspect-video bg-black"><div class="text-center text-xs">NO SIGNAL</div></div>
+      </div>
+      <div id="lock-video" class="lock-screen"><h3 class="text-lg font-bold mb-4 text-yellow-400 font-mono">UPLINK LOCKED</h3><button onclick="App.pay()" class="cyber-btn danger">UNLOCK</button></div>
+    </section>
+
+    <!-- TOOLS -->
+    <section id="view-tools" class="view p-4">
+      <h2 class="text-lg font-bold mb-6 text-white border-b border-gray-800 pb-2 font-mono tracking-wider">MODULES</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div onclick="App.nav('ide')" class="glass-panel p-5 cursor-pointer hover:border-cyan-400 transition-all duration-300 text-center hover:shadow-[0_0_20px_rgba(0,243,255,0.2)]">
+          <div class="text-4xl mb-3">💻</div>
+          <div class="font-bold text-sm text-cyan-300 font-mono">IDE_STUDIO</div>
+          <div class="text-[10px] text-gray-500 mt-1">Code Editor + AI</div>
+        </div>
+        <div onclick="App.nav('art')" class="glass-panel p-5 cursor-pointer hover:border-pink-500 transition-all duration-300 text-center hover:shadow-[0_0_20px_rgba(236,72,153,0.2)]">
+          <div class="text-4xl mb-3">🎨</div>
+          <div class="font-bold text-sm text-pink-300 font-mono">AI_ART</div>
+          <div class="text-[10px] text-gray-500 mt-1">Image Generation</div>
+        </div>
+        <div onclick="App.nav('game')" class="glass-panel p-5 cursor-pointer hover:border-green-500 transition-all duration-300 text-center hover:shadow-[0_0_20px_rgba(34,197,94,0.2)]">
+          <div class="text-4xl mb-3">🕹️</div>
+          <div class="font-bold text-sm text-green-300 font-mono">ARCADE</div>
+          <div class="text-[10px] text-gray-500 mt-1">Game Builder</div>
+        </div>
+        <div onclick="App.nav('drive')" class="glass-panel p-5 cursor-pointer hover:border-purple-500 transition-all duration-300 text-center hover:shadow-[0_0_20px_rgba(168,85,247,0.2)]">
+          <div class="text-4xl mb-3">☁️</div>
+          <div class="font-bold text-sm text-purple-300 font-mono">CLOUD_DRIVE</div>
+          <div class="text-[10px] text-gray-500 mt-1">File Storage</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="view-set" class="view p-4">
+      <h2 class="text-lg font-bold mb-4 text-cyan-400 border-b border-gray-800 pb-2 font-mono tracking-wider">CONFIG</h2>
+      <div class="glass-panel p-4 mb-4 text-center">
+        <div class="text-xs text-gray-400 mb-2 font-mono">IDENTITY</div>
+        <div class="text-lg font-bold text-white mb-2 flex items-center justify-center gap-2" id="set-username">
+          <span id="set-avatar">👁️</span>
+          <span id="set-name">UNKNOWN</span>
+        </div>
+        <div class="text-[9px] text-gray-600 font-mono" id="user-role">GUEST</div>
+      </div>
+
+      <div class="glass-panel p-4 mb-4 border-purple-500/30 bg-purple-900/10">
+        <h3 class="font-bold text-purple-400 text-sm mb-2 font-mono">CLOUD STATUS</h3>
+        <div id="auth-status" class="text-xs text-gray-400 mb-2">Not Connected</div>
+        <button class="cyber-btn purple w-full text-xs">LINK ACCOUNT</button>
+      </div>
+
+      <div class="glass-panel p-4 mb-4 border-red-500/30 bg-red-900/10">
+        <h3 class="font-bold text-red-400 text-sm mb-2 font-mono">PREMIUM</h3>
+        <p class="text-[10px] text-gray-500 mb-3">Unlock all features: IDE, Art Gen, Game Builder</p>
+        <button onclick="App.pay()" class="cyber-btn danger w-full text-xs">UPGRADE</button>
+      </div>
+
+      <div class="glass-panel p-4">
+        <label class="text-[10px] text-gray-500 font-mono">AI PROVIDER</label>
+        <select id="sel-prov" class="cyber-input text-xs mt-2">
+          <option value="puter">Puter (Unlimited / Free)</option>
+          <option value="groq">Groq (Fast)</option>
+          <option value="openai">OpenAI (Key Required)</option>
+        </select>
+        <div id="wrap-key" class="mt-2 hidden">
+          <input id="txt-key" class="cyber-input text-xs" placeholder="API KEY">
+        </div>
+      </div>
+    </section>
+
+    <!-- IDE STUDIO V8 -->
+    <section id="view-ide" class="view" style="padding:0;">
+      <div class="ide-layout">
+        <!-- FILE TREE -->
+        <div id="ide-sidebar-panel" class="ide-sidebar">
+          <div class="p-2 border-b border-gray-800 flex justify-between items-center">
+            <span class="text-[9px] text-gray-500 uppercase font-mono">Explorer</span>
+            <div class="flex gap-2">
+              <span onclick="App.ide.newFile()" class="text-cyan-500 cursor-pointer text-xs hover:text-cyan-400">+</span>
+            </div>
+          </div>
+          <div id="ide-file-list" class="flex-1 overflow-y-auto"></div>
+          <div class="p-2 border-t border-gray-800 grid grid-cols-2 gap-1">
+            <button onclick="App.ide.run()" class="cyber-btn sm text-[9px]">RUN</button>
+            <button onclick="App.toggleCopilot()" class="cyber-btn sm purple text-[9px]">COPILOT</button>
+          </div>
+        </div>
+
+        <!-- EDITOR -->
+        <div class="ide-main">
+          <div class="h-10 bg-black/90 border-b border-gray-800 flex justify-between items-center px-4 z-10">
+            <div class="flex items-center gap-2">
+              <span id="ide-current-file" class="text-xs text-cyan-400 font-mono">main.js</span>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="App.ide.run()" class="cyber-btn sm text-[9px]">RUN</button>
+            </div>
+          </div>
+
+          <div class="flex-1 relative">
+            <div id="monaco-container" style="position:absolute; top:0; bottom:150px; left:0; right:0;"></div>
+            <div class="ide-console" style="position:absolute; bottom:0; left:0; right:0;">
+              <div class="ide-console-header p-1 bg-black border-b border-gray-800 text-[9px] text-gray-500 flex justify-between font-mono">
+                <span>CONSOLE</span>
+                <span onclick="App.ide.clearConsole()" class="cursor-pointer hover:text-red-500">CLEAR</span>
+              </div>
+              <div id="ide-console-log" class="flex-1 overflow-y-auto bg-black h-full"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COPILOT -->
+        <div id="ide-copilot-panel" class="ide-copilot hidden md:flex">
+          <div class="h-10 bg-black border-b border-gray-800 flex items-center px-4 text-xs font-bold text-pink-500 justify-between font-mono">
+            <span>AI COPILOT</span>
+            <span onclick="App.toggleCopilot()" class="text-gray-500 cursor-pointer hover:text-white md:hidden">✕</span>
+          </div>
+          <div id="copilot-chat" class="copilot-chat flex-1"></div>
+          <div class="p-2 bg-black border-t border-gray-800">
+            <div class="flex gap-2">
+              <input type="text" id="copilot-in" class="cyber-input text-xs flex-1" placeholder="Ask AI..." autocomplete="off">
+              <button onclick="App.ide.askCopilot()" class="cyber-btn sm text-pink-400 border-pink-500">ASK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ART -->
+    <section id="view-art" class="view p-4">
+      <div class="mb-4">
+        <input type="text" id="img-prompt" class="cyber-input mb-3" placeholder="Describe visual... (e.g., cyberpunk city at night)">
+        <button onclick="App.img.gen()" class="cyber-btn w-full" style="background:rgba(255,0,255,0.2); color:var(--neon-pink); border-color:var(--neon-pink);">GENERATE AI IMAGE</button>
+      </div>
+      <div id="img-out" class="rounded overflow-hidden border border-gray-800 min-h-[250px] flex items-center justify-center bg-black/50">
+        <span class="text-gray-600 text-xs font-mono">AI RENDER OUTPUT</span>
+      </div>
+      <div id="lock-art" class="lock-screen"><h3 class="text-lg font-bold mb-4 text-yellow-400 font-mono">ART LOCKED</h3><button onclick="App.pay()" class="cyber-btn danger">UNLOCK</button></div>
+    </section>
+
+    <!-- GAME -->
+    <section id="view-game" class="view" style="padding:0;">
+      <div class="absolute top-0 left-0 right-0 p-3 bg-black/90 z-10 flex gap-2">
+        <input type="text" id="game-prompt" class="cyber-input text-xs py-2 flex-1" placeholder="Game prompt... (e.g., snake, pong, space invaders)">
+        <button onclick="App.game.gen()" class="cyber-btn text-xs">BUILD</button>
+      </div>
+      <iframe id="game-frame" style="width:100%; height:100%; border:none; background:#000; margin-top:50px;"></iframe>
+      <div id="lock-game" class="lock-screen"><h3 class="text-lg font-bold mb-4 text-yellow-400 font-mono">GAME LOCKED</h3><button onclick="App.pay()" class="cyber-btn danger">UNLOCK</button></div>
+    </section>
+
+    <!-- DRIVE VIEW -->
+    <section id="view-drive" class="view p-4">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-bold text-purple-400 border-b border-gray-800 pb-2 flex-1 font-mono tracking-wider">CLOUD DRIVE</h2>
+        <button onclick="App.drive.list()" class="cyber-btn sm purple text-[9px] ml-2">REFRESH</button>
+      </div>
+      <div id="drive-list" class="space-y-2 pb-20 overflow-y-auto">
+        <div class="text-center text-gray-500 text-xs mt-4 py-8 border border-dashed border-gray-800 rounded">
+          Connect Account to see files
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-item active" onclick="App.nav('global')"><span class="text-lg">💬</span><span class="nav-label text-[10px]">Chat</span></div>
+    <div class="nav-item" onclick="App.nav('tools')"><span class="text-lg">🛠</span><span class="nav-label text-[10px]">Tools</span></div>
+    <div class="nav-item" onclick="App.nav('ide')"><span class="text-lg">💻</span><span class="nav-label text-[10px]">IDE</span></div>
+    <div class="nav-item" onclick="App.nav('drive')"><span class="text-lg">☁️</span><span class="nav-label text-[10px]">Drive</span></div>
+    <div class="nav-item" onclick="App.nav('set')"><span class="text-lg">⚙️</span><span class="nav-label text-[10px]">Sys</span></div>
+  </nav>
+</div>
+
+<script>
+/**
+ * NEXUS OS V8.0 [OMNI]
+ * A futuristic cyberpunk operating system interface
+ */
+
+// --- VISUAL FX ---
+const CanvasBG = {
+  init: () => {
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [];
+
+    const resize = () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * w;
+        this.y = Math.random() * h;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > w) this.vx *= -1;
+        if (this.y < 0 || this.y > h) this.vy *= -1;
+      }
+    }
+
+    Particle.prototype.draw = function(ctx) {
+      ctx.fillStyle = 'rgba(0, 243, 255, 0.5)';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+    const animate = () => {
+      ctx.clearRect(0, 0, w, h);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw(ctx);
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(0, 243, 255, ${0.3 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+  }
+};
+
+const SFX = {
+  ctx: null,
+  init: () => {
+    if(!SFX.ctx) SFX.ctx = new (window.AudioContext || window.webkitAudioContext)();
+  },
+  play: (type) => {
+    if(!SFX.ctx) SFX.init();
+    const o = SFX.ctx.createOscillator();
+    const g = SFX.ctx.createGain();
+    o.connect(g);
+    g.connect(SFX.ctx.destination);
+    const n = SFX.ctx.currentTime;
+    if(type === 'click') {
+      o.type = 'sine';
+      o.frequency.setValueAtTime(600, n);
+      g.gain.setValueAtTime(0.1, n);
+      g.gain.exponentialRampToValueAtTime(0.01, n + 0.1);
+      o.start(n);
+      o.stop(n + 0.1);
+    }
+  }
+};
+
+const $ = id => document.getElementById(id);
+const showToast = (msg, type = 'info') => {
+  const c = $('toast-container');
+  const el = document.createElement('div');
+  el.className = `toast ${type === 'error' ? 'error' : type === 'success' ? 'success' : ''}`;
+  el.innerText = msg;
+  c.appendChild(el);
+  SFX.play('click');
+  setTimeout(() => { el.remove(); }, 3000);
+};
+
+// --- DB & STATE ---
+const IDB = {
+  db: null,
+  init: () => {
+    return new Promise((res) => {
+      const r = indexedDB.open('NexusDB', 1);
+      r.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('p')) db.createObjectStore('p', { keyPath: 'id' });
+      };
+      r.onsuccess = (e) => {
+        IDB.db = e.target.result;
+        res();
+      };
+    });
+  },
+  get: (store, id) => {
+    return new Promise((res) => {
+      const tx = IDB.db.transaction(store, 'readonly').objectStore(store).get(id);
+      tx.onsuccess = () => res(tx.result);
+    });
+  },
+  set: (store, data) => {
+    const tx = IDB.db.transaction(store, 'readwrite').objectStore(store).put(data);
+    return new Promise((res) => { tx.onsuccess = () => res(); });
+  }
+};
+
+window.Nexus = {
+  provider: 'puter',
+  db: { users: [], adminPassword: 'nexus2024' },
+  session: null,
+  ideProject: {
+    files: {
+      'main.js': '// Welcome to NEXUS V8\nconsole.log("System Ready");\n\n// Your code here...'
+    },
+    activeFile: 'main.js'
+  },
+  editor: null
+};
+
+const DB = {
+  save: () => { localStorage.setItem('nexus_db', JSON.stringify(Nexus.db)); },
+  sess: (u) => { localStorage.setItem('nexus_session', JSON.stringify(u)); },
+  saveChat: (m) => {
+    let h = JSON.parse(localStorage.getItem('nexus_ch') || '[]');
+    h.push(m);
+    if(h.length > 50) h = h.slice(-50);
+    localStorage.setItem('nexus_ch', JSON.stringify(h));
+  },
+  saveIDE: async () => {
+    if(Nexus.editor) Nexus.ideProject.files[Nexus.ideProject.activeFile] = Nexus.editor.getValue();
+    await IDB.set('p', { id: 'proj', data: Nexus.ideProject });
+  },
+  loadIDE: async () => {
+    const r = await IDB.get('p', 'proj');
+    if(r) Nexus.ideProject = r.data;
+  }
+};
+
+try {
+  const s = localStorage.getItem('nexus_db');
+  if(s) Nexus.db = JSON.parse(s);
+} catch(e){}
+
+try {
+  const s = localStorage.getItem('nexus_session');
+  if(s) Nexus.session = JSON.parse(s);
+} catch(e){}
+
+// --- APP LOGIC ---
+const App = {
+  auth: {
+    temp: null,
+    data: {
+      n1: ["Neon", "Cyber", "Zero", "Ghost", "Dark", "Shadow", "Pixel", "Byte"],
+      n2: ["Wolf", "Punk", "Hacker", "Raven", "Viper", "Phoenix", "Storm", "Blade"],
+      avs: ["👁️", "👾", "🤖", "🦾", "🧬", "⚡", "🔮", "🎭"]
+    },
+    gen: () => {
+      const D = App.auth.data;
+      const n = D.n1[~~(Math.random()*D.n1.length)] + "_" + D.n2[~~(Math.random()*D.n2.length)] + "_" + ~~(Math.random()*999).toString().padStart(3, '0');
+      const a = D.avs[~~(Math.random()*D.avs.length)];
+      $('gen-name').innerText = n;
+      $('gen-avatar').innerText = a;
+      App.auth.temp = { name: n, avatar: a };
+    },
+    login: () => {
+      const u = App.auth.temp || { name: 'Guest_' + ~~(Math.random()*999), avatar: '👤' };
+      if (!Nexus.db.users.find(x => x.name === u.name)) {
+        Nexus.db.users.push({ name: u.name, paid: false });
+        DB.save();
+      }
+      const user = Nexus.db.users.find(x => x.name === u.name);
+      Nexus.session = { ...u, role: 'user', paid: user.paid };
+      DB.sess(Nexus.session);
+      App.boot();
+    },
+    admin: () => {
+      if($('admin-pass').value === Nexus.db.adminPassword) {
+        Nexus.session = { name: 'ROOT', role: 'admin', paid: true, avatar: '🛡️' };
+        DB.sess(Nexus.session);
+        App.boot();
+      } else showToast("ACCESS DENIED", "error");
+    }
+  },
+
+  boot: async () => {
+    await IDB.init();
+    CanvasBG.init();
+
+    if(Nexus.session) {
+      $('id-screen').classList.add('hidden');
+      $('app-main').classList.remove('hidden');
+      $('set-name').innerText = Nexus.session.name;
+      $('set-avatar').innerText = Nexus.session.avatar;
+      $('user-role').innerText = Nexus.session.role.toUpperCase();
+    }
+
+    const isUnlocked = (Nexus.session.role === 'admin' || Nexus.session.paid);
+    ['video', 'art', 'game'].forEach(id => {
+      const l = $(`lock-${id}`);
+      if(l) l.style.display = isUnlocked ? 'none' : 'flex';
+    });
+
+    App.chat.init();
+    App.chat.load();
+    App.startHUD();
+    await DB.loadIDE();
+    App.ide.initMonaco();
+  },
+
+  nav: (name) => {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    $('view-'+name)?.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+    const map = {global:0, tools:1, ide:2, drive:3, set:4, art:1, game:1, video:1};
+    const idx = map[name];
+    if(idx !== undefined) document.querySelectorAll('.nav-item')[idx]?.classList.add('active');
+  },
+
+  toggleCLI: () => {
+    $('cli-overlay').classList.toggle('active');
+    if($('cli-overlay').classList.contains('active')) $('cli-input').focus();
+  },
+
+  toggleSidebar: () => {
+    $('ide-sidebar-panel').classList.toggle('active');
+  },
+
+  toggleCopilot: () => {
+    const panel = $('ide-copilot-panel');
+    panel.classList.toggle('active');
+    panel.classList.toggle('hidden');
+  },
+
+  startHUD: () => {
+    setInterval(() => {
+      $('hud-clock').innerText = new Date().toLocaleTimeString();
+    }, 1000);
+    setInterval(() => {
+      $('cpu-fill').style.width = (Math.random() * 60 + 20) + "%";
+    }, 2000);
+  },
+
+  // --- CLI ---
+  CLI: {
+    history: [],
+    process: async (cmd) => {
+      const parts = cmd.split(' ');
+      const cmd_main = parts[0].toLowerCase();
+      const args = parts.slice(1).join(' ');
+
+      App.CLI.log(`> ${cmd}`, 'dim');
+
+      if(cmd_main === '/help') {
+        App.CLI.log("Commands: /help, /clear, /status, /version, /nav [view]", 'info');
+      } else if(cmd_main === '/clear') {
+        $('cli-history').innerHTML = '';
+      } else if(cmd_main === '/status') {
+        App.CLI.log(`System Online | User: ${Nexus.session.name} | Role: ${Nexus.session.role}`, 'info');
+      } else if(cmd_main === '/version') {
+        App.CLI.log("NEXUS OS v8.0 [OMNI] - Build 2024.1", 'info');
+      } else if(cmd_main === '/nav') {
+        App.nav(args);
+        App.CLI.log(`Navigated to: ${args}`, 'info');
+      } else {
+        App.CLI.log("Unknown command. Type /help", 'warn');
+      }
+    },
+    log: (text, type = '') => {
+      const d = document.createElement('div');
+      d.className = `text-xs font-mono ${type === 'dim' ? 'text-gray-500' : type === 'warn' ? 'text-yellow-500' : 'text-cyan-400'}`;
+      d.innerText = text;
+      $('cli-history').appendChild(d);
+      $('cli-history').scrollTop = $('cli-history').scrollHeight;
+    }
+  },
+
+  // --- CHAT ---
+  chat: {
+    init: () => {
+      window.addEventListener('storage', (e) => {
+        if(e.key === 'nexus_msg') {
+          const m = JSON.parse(e.newValue);
+          if(m.sender !== Nexus.session.name) App.chat.render(m, false);
+        }
+      });
+    },
+    load: () => {
+      const h = JSON.parse(localStorage.getItem('nexus_ch') || '[]');
+      h.forEach(m => App.chat.render(m, m.s === Nexus.session.name));
+      $('chat-log').scrollTop = 9999;
+    },
+    send: async () => {
+      const t = $('chat-in').value.trim();
+      if(!t) return;
+      $('chat-in').value = '';
+
+      const m = {
+        sender: Nexus.session.name,
+        text: t,
+        avatar: Nexus.session.avatar,
+        s: Nexus.session.name,
+        time: Date.now()
+      };
+
+      App.chat.render(m, true);
+      DB.saveChat(m);
+      localStorage.setItem('nexus_msg', JSON.stringify(m));
+    },
+    render: (m, isMe) => {
+      const d = document.createElement('div');
+      d.className = `chat-msg flex flex-col gap-1 ${isMe ? 'items-end' : 'items-start'}`;
+      d.innerHTML = `
+        <div class="text-[9px] text-gray-500 font-mono">${m.avatar} ${m.sender}</div>
+        <div class="max-w-[80%] px-3 py-2 text-sm ${isMe ? 'bg-pink-500/10 border border-pink-500/30 text-pink-200' : 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-200'}">${m.text}</div>
+      `;
+      $('chat-log').appendChild(d);
+      $('chat-log').scrollTop = 9999;
+    }
+  },
+
+  // --- IDE & COPILOT ---
+  ide: {
+    initMonaco: () => {
+      require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } });
+      require(['vs/editor/editor.main'], function () {
+        monaco.editor.defineTheme('nexus', {
+          base: 'vs-dark',
+          inherit: true,
+          rules: [
+            { token: 'comment', foreground: '4a5568' },
+            { token: 'keyword', foreground: '00f3ff' },
+            { token: 'string', foreground: 'ff00ff' },
+            { token: 'number', foreground: '0aff00' }
+          ],
+          colors: {
+            'editor.background': '#050505',
+            'editor.foreground': '#e0e0e0',
+            'editor.lineHighlightBackground': '#111111',
+            'editorCursor.foreground': '#00f3ff'
+          }
+        });
+
+        Nexus.editor = monaco.editor.create($('monaco-container'), {
+          value: Nexus.ideProject.files[Nexus.ideProject.activeFile],
+          language: 'javascript',
+          theme: 'nexus',
+          automaticLayout: true,
+          fontSize: 14,
+          fontFamily: "'JetBrains Mono'",
+          minimap: { enabled: false },
+          scrollBeyondLastLine: false
+        });
+
+        Nexus.editor.onDidChangeModelContent(() => DB.saveIDE());
+        App.ide.refreshFiles();
+      });
+    },
+
+    refreshFiles: () => {
+      const l = $('ide-file-list');
+      l.innerHTML = '';
+      Object.keys(Nexus.ideProject.files).forEach(n => {
+        const e = document.createElement('div');
+        e.className = `file-item ${Nexus.ideProject.activeFile === n ? 'active' : ''}`;
+        e.innerHTML = `<span>📄 ${n}</span><span class="text-red-500/50 hover:text-red-500 cursor-pointer text-[10px]" onclick="event.stopPropagation();App.ide.del('${n}')">✕</span>`;
+        e.onclick = () => App.ide.open(n);
+        l.appendChild(e);
+      });
+    },
+
+    open: (n) => {
+      if(Nexus.editor) Nexus.ideProject.files[Nexus.ideProject.activeFile] = Nexus.editor.getValue();
+      Nexus.ideProject.activeFile = n;
+      if(Nexus.editor) Nexus.editor.setValue(Nexus.ideProject.files[n] || '');
+      $('ide-current-file').innerText = n;
+      App.ide.refreshFiles();
+    },
+
+    newFile: () => {
+      const n = prompt("File name:");
+      if(n && !Nexus.ideProject.files[n]) {
+        Nexus.ideProject.files[n] = '// New file';
+        App.ide.open(n);
+        DB.saveIDE();
+      }
+    },
+
+    del: (n) => {
+      if(Object.keys(Nexus.ideProject.files).length <= 1) return showToast("Cannot delete last file", "error");
+      delete Nexus.ideProject.files[n];
+      if(Nexus.ideProject.activeFile === n) Nexus.ideProject.activeFile = Object.keys(Nexus.ideProject.files)[0];
+      DB.saveIDE();
+      App.ide.open(Nexus.ideProject.activeFile);
+    },
+
+    run: () => {
+      DB.saveIDE();
+      const code = Nexus.editor.getValue();
+      const inject = `<script>console.log=(...a)=>parent.postMessage({t:'log',d:a.map(i=>typeof i==='object'?JSON.stringify(i):String(i)).join(' ')},'*');window.onerror=(e)=>parent.postMessage({t:'err',d:e},'*');<\/script><script>${code}<\/script>`;
+
+      window.onmessage = (e) => {
+        if(e.data.t === 'log') App.ide.log(e.data.d, 'info');
+        if(e.data.t === 'err') App.ide.log(e.data.d, 'error');
+      };
+
+      let p = document.getElementById('ide-preview');
+      if(!p) {
+        p = document.createElement('iframe');
+        p.id = 'ide-preview';
+        p.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;background:white;opacity:0;pointer-events:none;';
+        $('monaco-container').appendChild(p);
+      }
+      p.srcdoc = inject;
+      showToast("Code Executed", "success");
+    },
+
+    log: (m, t) => {
+      const el = document.createElement('div');
+      el.className = `console-log ${t}`;
+      el.innerText = `> ${m}`;
+      $('ide-console-log').appendChild(el);
+      $('ide-console-log').scrollTop = 9999;
+    },
+
+    clearConsole: () => {
+      $('ide-console-log').innerHTML = '';
+    },
+
+    askCopilot: async () => {
+      const q = $('copilot-in').value.trim();
+      if(!q) return;
+      $('copilot-in').value = '';
+
+      const uDiv = document.createElement('div');
+      uDiv.className = 'copilot-msg user';
+      uDiv.innerText = q;
+      $('copilot-chat').appendChild(uDiv);
+
+      const aDiv = document.createElement('div');
+      aDiv.className = 'copilot-msg ai';
+      aDiv.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:1px;"></div>';
+      $('copilot-chat').appendChild(aDiv);
+      $('copilot-chat').scrollTop = 9999;
+
+      // Simulated AI response
+      setTimeout(() => {
+        const responses = [
+          "I can help with that! Consider breaking your code into smaller functions for better maintainability.",
+          "Your code structure looks good. You might want to add error handling for edge cases.",
+          "Try using modern ES6+ features like arrow functions and destructuring for cleaner code.",
+          "Consider adding comments to explain complex logic for future reference.",
+          "You could optimize this by using memoization or caching repeated calculations."
+        ];
+        aDiv.innerText = responses[Math.floor(Math.random() * responses.length)];
+      }, 1000);
+    }
+  },
+
+  // --- DRIVE ---
+  drive: {
+    list: async () => {
+      showToast("Refreshing drive...");
+      const mockFiles = [
+        { name: 'projects', type: 'folder', size: '---' },
+        { name: 'readme.txt', type: 'file', size: '2KB' },
+        { name: 'config.json', type: 'file', size: '512B' }
+      ];
+
+      $('drive-list').innerHTML = '';
+      mockFiles.forEach(f => {
+        const el = document.createElement('div');
+        el.className = "p-3 bg-white/5 rounded border border-gray-800 text-xs flex justify-between items-center hover:bg-white/10 transition-colors cursor-pointer font-mono";
+        el.innerHTML = `<span>${f.type === 'folder' ? '📁' : '📄'} ${f.name}</span><span class="text-gray-500">${f.size}</span>`;
+        $('drive-list').appendChild(el);
+      });
+      showToast("Drive loaded", "success");
+    },
+
+    showDeploy: () => {
+      $('deploy-modal').style.display = 'flex';
+    },
+
+    deploy: async () => {
+      const name = $('deploy-name').value || 'nexus-app';
+      showToast("Deploying...");
+      setTimeout(() => {
+        $('deploy-modal').style.display = 'none';
+        showToast(`Deployed: ${name}.app.nexus-os.io`, "success");
+      }, 2000);
+    }
+  },
+
+  // --- IMAGE GENERATOR ---
+  img: {
+    gen: async () => {
+      const p = $('img-prompt').value;
+      if(!p) return showToast("Enter a prompt", "error");
+
+      $('img-out').innerHTML = '<div class="spinner mx-auto"></div>';
+
+      // Use Pollinations AI for free image generation
+      const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(p)}?width=512&height=512&nologo=true`;
+
+      const img = new Image();
+      img.onload = () => {
+        $('img-out').innerHTML = '';
+        img.className = "w-full rounded";
+        $('img-out').appendChild(img);
+        showToast("Image generated!", "success");
+      };
+      img.onerror = () => {
+        $('img-out').innerHTML = '<span class="text-red-500 text-xs">Generation failed</span>';
+        showToast("Generation failed", "error");
+      };
+      img.src = url;
+    }
+  },
+
+  // --- GAME GENERATOR ---
+  game: {
+    gen: async () => {
+      const p = $('game-prompt').value;
+      if(!p) return showToast("Enter a game idea", "error");
+
+      $('game-frame').srcdoc = `<body style="background:#000;color:#0ff;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;">COMPILING...</body>`;
+
+      // Game templates
+      const games = {
+        snake: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { margin: 0; background: #0a0a0a; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; font-family: monospace; }
+    canvas { border: 2px solid #0ff; box-shadow: 0 0 20px rgba(0,255,255,0.3); }
+    .info { color: #0ff; margin-top: 10px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <canvas id="game" width="400" height="400"></canvas>
+  <div class="info">Score: <span id="score">0</span> | Use Arrow Keys</div>
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+    let snake = [{x: 10, y: 10}];
+    let food = {x: 15, y: 15};
+    let dx = 0, dy = 0;
+    let score = 0;
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowUp' && dy !== 1) { dx = 0; dy = -1; }
+      if (e.key === 'ArrowDown' && dy !== -1) { dx = 0; dy = 1; }
+      if (e.key === 'ArrowLeft' && dx !== 1) { dx = -1; dy = 0; }
+      if (e.key === 'ArrowRight' && dx !== -1) { dx = 1; dy = 0; }
+    });
+    function gameLoop() {
+      const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+      if (head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 20 || snake.some(s => s.x === head.x && s.y === head.y)) {
+        snake = [{x: 10, y: 10}]; dx = 0; dy = 0; score = 0; scoreEl.textContent = score;
+        return;
+      }
+      snake.unshift(head);
+      if (head.x === food.x && head.y === food.y) {
+        score += 10; scoreEl.textContent = score;
+        food = {x: Math.floor(Math.random()*20), y: Math.floor(Math.random()*20)};
+      } else { snake.pop(); }
+      ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, 400, 400);
+      ctx.fillStyle = '#0ff'; snake.forEach(s => ctx.fillRect(s.x*20, s.y*20, 18, 18));
+      ctx.fillStyle = '#f0f'; ctx.fillRect(food.x*20, food.y*20, 18, 18);
+    }
+    setInterval(gameLoop, 100);
+  </script>
+</body>
+</html>`,
+        pong: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { margin: 0; background: #0a0a0a; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; font-family: monospace; }
+    canvas { border: 2px solid #0ff; box-shadow: 0 0 20px rgba(0,255,255,0.3); }
+    .info { color: #0ff; margin-top: 10px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <canvas id="game" width="600" height="400"></canvas>
+  <div class="info">P1: W/S | P2: Up/Down</div>
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    let p1 = {x: 10, y: 150, w: 10, h: 100, dy: 0, score: 0};
+    let p2 = {x: 580, y: 150, w: 10, h: 100, dy: 0, score: 0};
+    let ball = {x: 300, y: 200, dx: 4, dy: 4, r: 8};
+    document.addEventListener('keydown', e => {
+      if (e.key === 'w') p1.dy = -6;
+      if (e.key === 's') p1.dy = 6;
+      if (e.key === 'ArrowUp') p2.dy = -6;
+      if (e.key === 'ArrowDown') p2.dy = 6;
+    });
+    document.addEventListener('keyup', e => {
+      if (e.key === 'w' || e.key === 's') p1.dy = 0;
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') p2.dy = 0;
+    });
+    function gameLoop() {
+      p1.y = Math.max(0, Math.min(300, p1.y + p1.dy));
+      p2.y = Math.max(0, Math.min(300, p2.y + p2.dy));
+      ball.x += ball.dx; ball.y += ball.dy;
+      if (ball.y <= 0 || ball.y >= 400) ball.dy *= -1;
+      if (ball.x <= 20 && ball.y > p1.y && ball.y < p1.y + 100) { ball.dx *= -1; p1.score++; }
+      if (ball.x >= 580 && ball.y > p2.y && ball.y < p2.y + 100) { ball.dx *= -1; p2.score++; }
+      if (ball.x < 0 || ball.x > 600) { ball.x = 300; ball.y = 200; ball.dx = 4 * (ball.x < 300 ? 1 : -1); }
+      ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, 600, 400);
+      ctx.strokeStyle = '#333'; ctx.setLineDash([5, 5]); ctx.beginPath(); ctx.moveTo(300, 0); ctx.lineTo(300, 400); ctx.stroke();
+      ctx.fillStyle = '#0ff'; ctx.fillRect(p1.x, p1.y, p1.w, p1.h); ctx.fillRect(p2.x, p2.y, p2.w, p2.h);
+      ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2); ctx.fillStyle = '#f0f'; ctx.fill();
+      ctx.fillStyle = '#0ff'; ctx.font = '30px monospace'; ctx.fillText(p1.score, 150, 50); ctx.fillText(p2.score, 420, 50);
+      requestAnimationFrame(gameLoop);
+    }
+    gameLoop();
+  </script>
+</body>
+</html>`
+      };
+
+      // Match game
+      let gameKey = 'snake';
+      const lowerP = p.toLowerCase();
+      if (lowerP.includes('pong')) gameKey = 'pong';
+
+      setTimeout(() => {
+        $('game-frame').srcdoc = games[gameKey];
+        showToast("Game ready!", "success");
+      }, 1500);
+    }
+  },
+
+  // --- VIDEO ---
+  video: {
+    start: async () => {
+      const isUnlocked = (Nexus.session.role === 'admin' || Nexus.session.paid);
+      if(!isUnlocked) return showToast("Premium required", "error");
+
+      try {
+        const s = await navigator.mediaDevices.getUserMedia({video:true, audio:false});
+        const b = document.createElement('div');
+        b.className = 'video-box aspect-video bg-black';
+        b.innerHTML = `<video autoplay playsinline muted style="width:100%;height:100%;object-fit:cover;"></video>`;
+        b.querySelector('video').srcObject = s;
+        $('video-grid').prepend(b);
+        showToast("Camera active", "success");
+      } catch(e) {
+        showToast("Camera error: " + e.message, "error");
+      }
+    }
+  },
+
+  settings: {
+    ui: () => {
+      const p = $('sel-prov').value;
+      Nexus.provider = p;
+      localStorage.setItem('nexus_prov', p);
+      $('wrap-key').style.display = (p === 'puter') ? 'none' : 'block';
+    }
+  },
+
+  pay: () => {
+    showToast("Premium coming soon!", "info");
+  }
+};
+
+// --- EVENTS ---
+$('chat-in').addEventListener('keydown', e => e.key==='Enter' && App.chat.send());
+$('copilot-in').addEventListener('keydown', e => e.key==='Enter' && App.ide.askCopilot());
+$('cli-input').addEventListener('keydown', e => {
+  if(e.key==='Enter') {
+    App.CLI.process(e.target.value);
+    e.target.value = '';
+  }
+});
+$('sel-prov').addEventListener('change', App.settings.ui);
+
+// --- INIT ---
+App.auth.gen();
+if(Nexus.session) App.boot();
+</script>
+</body>
+</html>
