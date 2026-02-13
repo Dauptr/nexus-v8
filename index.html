@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://js.puter.com/v2/"></script>
   
   <style>
     :root {
@@ -38,11 +39,7 @@
       --text-muted: #304060;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       width: 100%;
@@ -53,20 +50,10 @@
       color: var(--text-normal);
     }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg-secondary);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--neon-cyan);
-      border-radius: 3px;
-    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 3px; }
 
-    /* Animations */
     @keyframes pulse-glow {
       0%, 100% { opacity: 0.5; filter: blur(20px); }
       50% { opacity: 1; filter: blur(30px); }
@@ -75,11 +62,6 @@
     @keyframes scan-line {
       0% { transform: translateY(-100%); }
       100% { transform: translateY(100vh); }
-    }
-
-    @keyframes neural-pulse {
-      0%, 100% { stroke-dashoffset: 1000; opacity: 0.3; }
-      50% { stroke-dashoffset: 0; opacity: 1; }
     }
 
     @keyframes float {
@@ -95,25 +77,9 @@
       98% { transform: translate(1px, -2px); }
     }
 
-    @keyframes data-stream {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 0% 100%; }
-    }
-
     @keyframes window-open {
-      from {
-        opacity: 0;
-        transform: scale(0.8) translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-    }
-
-    @keyframes icon-hover {
-      0%, 100% { filter: drop-shadow(0 0 5px var(--neon-cyan)); }
-      50% { filter: drop-shadow(0 0 15px var(--neon-cyan)); }
+      from { opacity: 0; transform: scale(0.8) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     @keyframes boot-sequence {
@@ -123,28 +89,21 @@
       100% { opacity: 0; }
     }
 
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; }
-    }
-
     @keyframes blink {
       0%, 50% { opacity: 1; }
       51%, 100% { opacity: 0; }
     }
 
     @keyframes breathe {
-      0%, 100% { 
-        box-shadow: 0 0 20px rgba(0, 240, 255, 0.3),
-                    inset 0 0 20px rgba(0, 240, 255, 0.1);
-      }
-      50% { 
-        box-shadow: 0 0 40px rgba(0, 240, 255, 0.5),
-                    inset 0 0 40px rgba(0, 240, 255, 0.2);
-      }
+      0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), inset 0 0 20px rgba(0, 240, 255, 0.1); }
+      50% { box-shadow: 0 0 40px rgba(0, 240, 255, 0.5), inset 0 0 40px rgba(0, 240, 255, 0.2); }
     }
 
-    /* Desktop */
+    @keyframes typing-indicator {
+      0%, 60%, 100% { opacity: 0.3; }
+      30% { opacity: 1; }
+    }
+
     .desktop {
       position: relative;
       width: 100%;
@@ -153,7 +112,6 @@
       overflow: hidden;
     }
 
-    /* Neural Canvas Background */
     #neural-canvas {
       position: absolute;
       top: 0;
@@ -163,7 +121,6 @@
       z-index: 0;
     }
 
-    /* Ambient Effects */
     .ambient-layer {
       position: absolute;
       top: 0;
@@ -181,35 +138,10 @@
       animation: pulse-glow 4s ease-in-out infinite;
     }
 
-    .glow-orb.cyan {
-      background: var(--neon-cyan);
-      width: 400px;
-      height: 400px;
-      top: -100px;
-      right: -100px;
-      animation-delay: 0s;
-    }
+    .glow-orb.cyan { background: var(--neon-cyan); width: 400px; height: 400px; top: -100px; right: -100px; }
+    .glow-orb.magenta { background: var(--neon-magenta); width: 300px; height: 300px; bottom: -50px; left: -50px; animation-delay: 1s; }
+    .glow-orb.violet { background: var(--neon-violet); width: 350px; height: 350px; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 2s; }
 
-    .glow-orb.magenta {
-      background: var(--neon-magenta);
-      width: 300px;
-      height: 300px;
-      bottom: -50px;
-      left: -50px;
-      animation-delay: 1s;
-    }
-
-    .glow-orb.violet {
-      background: var(--neon-violet);
-      width: 350px;
-      height: 350px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      animation-delay: 2s;
-    }
-
-    /* Scan Line */
     .scan-line {
       position: absolute;
       width: 100%;
@@ -220,28 +152,24 @@
       z-index: 2;
     }
 
-    /* Grid Overlay */
     .grid-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: 
-        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+      background-image: linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
       background-size: 50px 50px;
       pointer-events: none;
       z-index: 2;
     }
 
-    /* Icons Container */
     .icons-grid {
       position: absolute;
       top: 20px;
       left: 20px;
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 10px;
       z-index: 10;
     }
@@ -262,28 +190,27 @@
     .desktop-icon:hover {
       background: rgba(0, 240, 255, 0.1);
       border-color: var(--border-medium);
-      animation: icon-hover 1.5s ease-in-out infinite;
     }
 
-    .desktop-icon:active {
-      transform: scale(0.95);
+    .desktop-icon:active { transform: scale(0.95); }
+    .desktop-icon svg { width: 40px; height: 40px; margin-bottom: 5px; }
+    .desktop-icon span { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--text-bright); text-align: center; text-shadow: 0 0 10px var(--neon-cyan); }
+
+    .desktop-icon.premium { position: relative; }
+    .desktop-icon.premium::after {
+      content: 'PRO';
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      color: var(--neon-gold);
+      background: rgba(255, 204, 0, 0.2);
+      padding: 2px 4px;
+      border-radius: 3px;
     }
 
-    .desktop-icon svg {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 5px;
-    }
-
-    .desktop-icon span {
-      font-size: 11px;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--text-bright);
-      text-align: center;
-      text-shadow: 0 0 10px var(--neon-cyan);
-    }
-
-    /* Taskbar */
     .taskbar {
       position: absolute;
       bottom: 10px;
@@ -305,9 +232,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
       cursor: pointer;
       transition: all 0.2s ease;
       background: transparent;
@@ -320,29 +247,16 @@
       transform: translateY(-5px);
     }
 
-    .taskbar-item:active {
-      transform: translateY(-2px) scale(0.95);
-    }
-
     .taskbar-item.active {
       background: rgba(0, 240, 255, 0.2);
       border-color: var(--neon-cyan);
       box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
     }
 
-    .taskbar-item svg {
-      width: 24px;
-      height: 24px;
-    }
+    .taskbar-item svg { width: 22px; height: 22px; }
 
-    .taskbar-divider {
-      width: 1px;
-      height: 30px;
-      background: var(--border-medium);
-      margin: 0 5px;
-    }
+    .taskbar-divider { width: 1px; height: 30px; background: var(--border-medium); margin: 0 5px; }
 
-    /* System Tray */
     .system-tray {
       display: flex;
       align-items: center;
@@ -359,17 +273,9 @@
       color: var(--text-normal);
     }
 
-    .tray-item .value {
-      color: var(--neon-cyan);
-      font-weight: 600;
-    }
+    .tray-item .value { color: var(--neon-cyan); font-weight: 600; }
+    .tray-item .unit { color: var(--text-dim); font-size: 9px; }
 
-    .tray-item .unit {
-      color: var(--text-dim);
-      font-size: 9px;
-    }
-
-    /* Windows */
     .window {
       position: absolute;
       min-width: 400px;
@@ -381,21 +287,15 @@
       overflow: hidden;
       z-index: 100;
       animation: window-open 0.3s ease-out;
-      box-shadow: 
-        0 25px 50px -12px rgba(0, 0, 0, 0.5),
-        0 0 30px rgba(0, 240, 255, 0.1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 240, 255, 0.1);
     }
 
-    .window.minimized {
-      display: none;
-    }
+    .window.minimized { display: none; }
 
     .window.focused {
       z-index: 200;
       border-color: var(--neon-cyan);
-      box-shadow: 
-        0 25px 50px -12px rgba(0, 0, 0, 0.5),
-        0 0 40px rgba(0, 240, 255, 0.2);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 240, 255, 0.2);
     }
 
     .window-header {
@@ -421,15 +321,9 @@
       letter-spacing: 1px;
     }
 
-    .window-title svg {
-      width: 16px;
-      height: 16px;
-    }
+    .window-title svg { width: 16px; height: 16px; }
 
-    .window-controls {
-      display: flex;
-      gap: 8px;
-    }
+    .window-controls { display: flex; gap: 8px; }
 
     .window-btn {
       width: 12px;
@@ -440,29 +334,14 @@
       transition: all 0.2s ease;
     }
 
-    .window-btn.close {
-      background: var(--neon-red);
-    }
+    .window-btn.close { background: var(--neon-red); }
+    .window-btn.minimize { background: var(--neon-gold); }
+    .window-btn.maximize { background: var(--neon-green); }
+    .window-btn:hover { transform: scale(1.2); filter: brightness(1.3); }
 
-    .window-btn.minimize {
-      background: var(--neon-gold);
-    }
+    .window-content { height: calc(100% - 40px); overflow: auto; }
 
-    .window-btn.maximize {
-      background: var(--neon-green);
-    }
-
-    .window-btn:hover {
-      transform: scale(1.2);
-      filter: brightness(1.3);
-    }
-
-    .window-content {
-      height: calc(100% - 40px);
-      overflow: auto;
-    }
-
-    /* Terminal Window */
+    /* Terminal */
     .terminal-content {
       padding: 15px;
       font-family: 'JetBrains Mono', monospace;
@@ -473,49 +352,15 @@
       flex-direction: column;
     }
 
-    .terminal-output {
-      flex: 1;
-      overflow-y: auto;
-      margin-bottom: 10px;
-    }
+    .terminal-output { flex: 1; overflow-y: auto; margin-bottom: 10px; }
+    .terminal-line { margin-bottom: 5px; word-wrap: break-word; }
+    .terminal-line.system { color: var(--neon-violet); }
+    .terminal-line.error { color: var(--neon-red); }
+    .terminal-line.success { color: var(--neon-green); }
+    .terminal-line.info { color: var(--neon-cyan); }
 
-    .terminal-line {
-      margin-bottom: 5px;
-      word-wrap: break-word;
-    }
-
-    .terminal-line.system {
-      color: var(--neon-violet);
-    }
-
-    .terminal-line.error {
-      color: var(--neon-red);
-    }
-
-    .terminal-line.success {
-      color: var(--neon-green);
-    }
-
-    .terminal-line.info {
-      color: var(--neon-cyan);
-    }
-
-    .terminal-line.warning {
-      color: var(--neon-gold);
-    }
-
-    .terminal-input-line {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .terminal-prompt {
-      color: var(--neon-cyan);
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
+    .terminal-input-line { display: flex; align-items: center; gap: 8px; }
+    .terminal-prompt { color: var(--neon-cyan); font-weight: 600; white-space: nowrap; }
     .terminal-input {
       flex: 1;
       background: transparent;
@@ -527,15 +372,535 @@
       caret-color: var(--neon-cyan);
     }
 
-    .cursor-blink {
-      display: inline-block;
-      width: 8px;
-      height: 16px;
-      background: var(--neon-cyan);
-      animation: blink 1s step-end infinite;
+    /* AI Chat */
+    .ai-chat-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
 
-    /* System Monitor */
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      background: rgba(0, 240, 255, 0.03);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .model-selector {
+      display: flex;
+      gap: 8px;
+    }
+
+    .model-btn {
+      padding: 6px 12px;
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      border-radius: 6px;
+      color: var(--text-normal);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .model-btn:hover { background: rgba(0, 240, 255, 0.1); }
+    .model-btn.active { background: var(--neon-cyan); color: var(--bg-primary); border-color: var(--neon-cyan); }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .chat-message {
+      display: flex;
+      gap: 12px;
+      max-width: 90%;
+    }
+
+    .chat-message.user { align-self: flex-end; flex-direction: row-reverse; }
+    .chat-message.ai { align-self: flex-start; }
+
+    .chat-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .chat-message.user .chat-avatar { background: var(--neon-cyan); color: var(--bg-primary); }
+    .chat-message.ai .chat-avatar { background: var(--neon-violet); color: var(--text-bright); }
+
+    .chat-bubble {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .chat-message.user .chat-bubble { background: rgba(0, 240, 255, 0.15); color: var(--text-bright); }
+    .chat-message.ai .chat-bubble { background: rgba(139, 0, 255, 0.15); color: var(--text-bright); }
+
+    .chat-input-area {
+      display: flex;
+      gap: 10px;
+      padding: 15px;
+      background: rgba(0, 240, 255, 0.02);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .chat-input {
+      flex: 1;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text-bright);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      outline: none;
+      resize: none;
+    }
+
+    .chat-input:focus { border-color: var(--neon-cyan); }
+
+    .chat-send-btn {
+      padding: 12px 20px;
+      background: var(--neon-cyan);
+      border: none;
+      border-radius: 8px;
+      color: var(--bg-primary);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .chat-send-btn:hover { filter: brightness(1.2); transform: scale(1.05); }
+    .chat-send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      padding: 12px 16px;
+      background: rgba(139, 0, 255, 0.15);
+      border-radius: 12px;
+    }
+
+    .typing-indicator span {
+      width: 8px;
+      height: 8px;
+      background: var(--neon-violet);
+      border-radius: 50%;
+      animation: typing-indicator 1.4s infinite ease-in-out;
+    }
+
+    .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+    /* Conference */
+    .conference-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 15px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .video-tile {
+      aspect-ratio: 16/9;
+      background: var(--bg-tertiary);
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .video-tile.local { border-color: var(--neon-cyan); }
+
+    .video-tile video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-placeholder {
+      width: 50px;
+      height: 50px;
+      background: var(--neon-violet);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      color: var(--text-bright);
+    }
+
+    .video-name {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-bright);
+      background: rgba(0, 0, 0, 0.6);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .conference-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 15px;
+      background: rgba(0, 240, 255, 0.02);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .conf-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .conf-btn.mute { background: var(--bg-tertiary); color: var(--text-bright); border: 1px solid var(--border-medium); }
+    .conf-btn.mute:hover { background: var(--neon-gold); color: var(--bg-primary); }
+    .conf-btn.mute.active { background: var(--neon-red); color: var(--text-bright); }
+    .conf-btn.video-btn { background: var(--bg-tertiary); color: var(--text-bright); border: 1px solid var(--border-medium); }
+    .conf-btn.video-btn:hover { background: var(--neon-cyan); color: var(--bg-primary); }
+    .conf-btn.video-btn.active { background: var(--neon-red); color: var(--text-bright); }
+    .conf-btn.end { background: var(--neon-red); color: var(--text-bright); }
+    .conf-btn.end:hover { filter: brightness(1.2); }
+    .conf-btn.share { background: var(--neon-green); color: var(--bg-primary); }
+    .conf-btn.share:hover { filter: brightness(1.2); }
+
+    .conf-btn svg { width: 20px; height: 20px; }
+
+    /* Dev Lab */
+    .dev-lab-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .dev-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 15px;
+      background: rgba(0, 240, 255, 0.03);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .dev-btn {
+      padding: 8px 14px;
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      border-radius: 6px;
+      color: var(--text-normal);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dev-btn:hover { background: rgba(0, 240, 255, 0.1); color: var(--text-bright); }
+    .dev-btn.ai-btn { border-color: var(--neon-violet); color: var(--neon-violet); }
+    .dev-btn.ai-btn:hover { background: rgba(139, 0, 255, 0.2); }
+    .dev-btn.run-btn { border-color: var(--neon-green); color: var(--neon-green); }
+    .dev-btn.run-btn:hover { background: rgba(0, 255, 136, 0.2); }
+
+    .editor-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .code-editor {
+      flex: 1;
+      background: var(--bg-tertiary);
+      border: none;
+      outline: none;
+      color: var(--text-bright);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 15px;
+      resize: none;
+    }
+
+    .preview-panel {
+      width: 40%;
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border-subtle);
+    }
+
+    .preview-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: var(--text-bright);
+    }
+
+    /* Art Studio */
+    .art-studio-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .art-sidebar {
+      width: 250px;
+      background: rgba(0, 240, 255, 0.02);
+      border-right: 1px solid var(--border-subtle);
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .art-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .art-gallery {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .art-image-card {
+      aspect-ratio: 1;
+      background: var(--bg-tertiary);
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .art-image-card:hover { border-color: var(--neon-cyan); transform: scale(1.02); }
+
+    .art-image-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .art-prompt-area {
+      padding: 15px;
+      background: rgba(0, 240, 255, 0.02);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .art-prompt-input {
+      width: 100%;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--text-bright);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .art-prompt-input:focus { border-color: var(--neon-cyan); }
+
+    .art-generate-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--neon-violet), var(--neon-magenta));
+      border: none;
+      border-radius: 8px;
+      color: var(--text-bright);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .art-generate-btn:hover { filter: brightness(1.2); }
+    .art-generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Game Builder */
+    .game-builder-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .game-selector {
+      display: flex;
+      gap: 10px;
+      padding: 15px;
+      background: rgba(0, 240, 255, 0.02);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .game-template-btn {
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      color: var(--text-normal);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .game-template-btn:hover { background: rgba(0, 240, 255, 0.1); }
+    .game-template-btn.active { background: var(--neon-cyan); color: var(--bg-primary); border-color: var(--neon-cyan); }
+
+    .game-area {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--bg-tertiary);
+    }
+
+    .game-canvas {
+      border: 2px solid var(--neon-cyan);
+      border-radius: 8px;
+      background: #000;
+    }
+
+    .game-controls-info {
+      padding: 15px;
+      background: rgba(0, 240, 255, 0.02);
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .game-score {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      color: var(--neon-cyan);
+    }
+
+    /* Radio */
+    .radio-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .radio-now-playing {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+      background: rgba(0, 240, 255, 0.03);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .radio-art {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, var(--neon-violet), var(--neon-magenta));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .radio-art svg { width: 40px; height: 40px; stroke: var(--text-bright); }
+
+    .radio-info { flex: 1; }
+    .radio-station-name { font-family: 'Orbitron', sans-serif; font-size: 20px; color: var(--text-bright); margin-bottom: 5px; }
+    .radio-station-genre { font-size: 13px; color: var(--neon-cyan); margin-bottom: 10px; }
+
+    .radio-controls { display: flex; gap: 10px; }
+
+    .radio-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .radio-btn.play { background: var(--neon-cyan); color: var(--bg-primary); width: 56px; height: 56px; }
+    .radio-btn.play:hover { filter: brightness(1.2); transform: scale(1.05); }
+    .radio-btn.vol { background: var(--bg-tertiary); color: var(--text-bright); border: 1px solid var(--border-medium); }
+    .radio-btn.vol:hover { background: rgba(0, 240, 255, 0.1); }
+
+    .radio-stations {
+      flex: 1;
+      overflow-y: auto;
+      padding: 15px;
+    }
+
+    .station-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px;
+      background: rgba(0, 240, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .station-card:hover { background: rgba(0, 240, 255, 0.08); border-color: var(--border-medium); }
+    .station-card.playing { border-color: var(--neon-cyan); background: rgba(0, 240, 255, 0.1); }
+
+    .station-flag { font-size: 24px; }
+    .station-info { flex: 1; }
+    .station-name { font-size: 14px; color: var(--text-bright); margin-bottom: 2px; }
+    .station-country { font-size: 11px; color: var(--text-dim); }
+
+    /* Monitor */
     .monitor-content {
       padding: 20px;
       display: grid;
@@ -575,18 +940,13 @@
       overflow: hidden;
     }
 
-    .monitor-bar-fill {
-      height: 100%;
-      border-radius: 2px;
-      transition: width 0.5s ease;
-    }
-
+    .monitor-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
     .monitor-bar-fill.cyan { background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue)); }
     .monitor-bar-fill.green { background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan)); }
     .monitor-bar-fill.magenta { background: linear-gradient(90deg, var(--neon-magenta), var(--neon-violet)); }
     .monitor-bar-fill.gold { background: linear-gradient(90deg, var(--neon-gold), var(--neon-red)); }
 
-    /* Neural Core Window */
+    /* Neural Core */
     .neural-core-content {
       padding: 20px;
       display: flex;
@@ -596,12 +956,7 @@
       height: 100%;
     }
 
-    .neural-avatar {
-      position: relative;
-      width: 150px;
-      height: 150px;
-      margin-bottom: 20px;
-    }
+    .neural-avatar { position: relative; width: 120px; height: 120px; margin-bottom: 20px; }
 
     .neural-avatar-ring {
       position: absolute;
@@ -613,168 +968,554 @@
       animation: float 3s ease-in-out infinite;
     }
 
-    .neural-avatar-ring:nth-child(1) {
-      width: 150px;
-      height: 150px;
-      border-color: var(--neon-cyan);
-      animation-delay: 0s;
-    }
-
-    .neural-avatar-ring:nth-child(2) {
-      width: 120px;
-      height: 120px;
-      border-color: var(--neon-violet);
-      animation-delay: 0.5s;
-      animation-direction: reverse;
-    }
-
-    .neural-avatar-ring:nth-child(3) {
-      width: 90px;
-      height: 90px;
-      border-color: var(--neon-magenta);
-      animation-delay: 1s;
-    }
+    .neural-avatar-ring:nth-child(1) { width: 120px; height: 120px; border-color: var(--neon-cyan); }
+    .neural-avatar-ring:nth-child(2) { width: 90px; height: 90px; border-color: var(--neon-violet); animation-direction: reverse; }
+    .neural-avatar-ring:nth-child(3) { width: 60px; height: 60px; border-color: var(--neon-magenta); }
 
     .neural-avatar-core {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 60px;
-      height: 60px;
+      width: 40px;
+      height: 40px;
       background: radial-gradient(circle, var(--neon-cyan), var(--neon-violet));
       border-radius: 50%;
       animation: pulse-glow 2s ease-in-out infinite;
     }
 
-    .neural-status {
-      text-align: center;
+    .neural-status { text-align: center; }
+    .neural-status-title { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-bright); margin-bottom: 5px; }
+    .neural-status-subtitle { font-size: 12px; color: var(--neon-cyan); margin-bottom: 15px; }
+
+    .neural-metrics { display: flex; gap: 20px; }
+    .neural-metric { text-align: center; }
+    .neural-metric-value { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 700; color: var(--neon-cyan); }
+    .neural-metric-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; }
+
+    /* Login Modal */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 1, 1, 0.95);
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .neural-status-title {
+    .login-overlay.hidden { display: none; }
+
+    .login-modal {
+      width: 400px;
+      background: var(--glass-dark);
+      border: 1px solid var(--border-medium);
+      border-radius: 16px;
+      padding: 30px;
+      backdrop-filter: blur(20px);
+      animation: window-open 0.3s ease-out;
+    }
+
+    .login-logo {
       font-family: 'Orbitron', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-bright);
-      margin-bottom: 5px;
+      font-size: 28px;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 30px;
     }
 
-    .neural-status-subtitle {
+    .login-logo span { color: var(--neon-cyan); }
+
+    .login-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .login-tab {
+      flex: 1;
+      padding: 10px;
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      color: var(--text-normal);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .login-tab.active { background: var(--neon-cyan); color: var(--bg-primary); border-color: var(--neon-cyan); }
+
+    .login-form { display: flex; flex-direction: column; gap: 15px; }
+
+    .login-input {
+      padding: 14px 16px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      color: var(--text-bright);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .login-input:focus { border-color: var(--neon-cyan); }
+
+    .login-submit {
+      padding: 14px;
+      background: var(--neon-cyan);
+      border: none;
+      border-radius: 8px;
+      color: var(--bg-primary);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .login-submit:hover { filter: brightness(1.1); }
+
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 20px 0;
+      color: var(--text-dim);
       font-size: 12px;
-      color: var(--neon-cyan);
+    }
+
+    .login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: var(--border-subtle); }
+
+    .login-guest {
+      padding: 14px;
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      color: var(--text-bright);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .login-guest:hover { background: rgba(0, 240, 255, 0.1); }
+
+    /* Premium Modal */
+    .premium-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 1, 1, 0.95);
+      z-index: 8500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .premium-overlay.hidden { display: none; }
+
+    .premium-modal {
+      width: 500px;
+      background: var(--glass-dark);
+      border: 1px solid var(--neon-gold);
+      border-radius: 16px;
+      padding: 30px;
+      backdrop-filter: blur(20px);
+      animation: window-open 0.3s ease-out;
+    }
+
+    .premium-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      background: linear-gradient(135deg, var(--neon-gold), var(--neon-magenta));
+      border-radius: 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--bg-primary);
       margin-bottom: 15px;
     }
 
-    .neural-metrics {
-      display: flex;
-      gap: 20px;
+    .premium-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 10px;
     }
 
-    .neural-metric {
+    .premium-desc {
+      color: var(--text-dim);
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .premium-features {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .premium-feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--text-normal);
+    }
+
+    .premium-feature svg { color: var(--neon-green); flex-shrink: 0; }
+
+    .premium-price {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .premium-amount {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--neon-gold);
+    }
+
+    .premium-period { color: var(--text-dim); font-size: 13px; }
+
+    .premium-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--neon-gold), #ff9500);
+      border: none;
+      border-radius: 10px;
+      color: var(--bg-primary);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .premium-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+
+    .premium-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 30px;
+      height: 30px;
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      border-radius: 50%;
+      color: var(--text-dim);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .premium-close:hover { color: var(--text-bright); border-color: var(--text-dim); }
+
+    /* Admin Panel */
+    .admin-content {
+      padding: 20px;
+    }
+
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .admin-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      color: var(--text-bright);
+    }
+
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .admin-stat {
+      background: rgba(0, 240, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 15px;
       text-align: center;
     }
 
-    .neural-metric-value {
+    .admin-stat-value {
       font-family: 'Orbitron', sans-serif;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 700;
       color: var(--neon-cyan);
     }
 
-    .neural-metric-label {
+    .admin-stat-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    .admin-users-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .admin-users-table th, .admin-users-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .admin-users-table th {
+      font-family: 'Orbitron', sans-serif;
       font-size: 10px;
       color: var(--text-dim);
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    /* File Manager */
-    .file-manager-content {
-      display: flex;
-      height: 100%;
+    .admin-users-table td { font-size: 13px; color: var(--text-normal); }
+
+    .admin-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .file-sidebar {
-      width: 180px;
-      background: rgba(0, 240, 255, 0.02);
-      border-right: 1px solid var(--border-subtle);
-      padding: 15px;
+    .admin-badge.premium { background: rgba(255, 204, 0, 0.2); color: var(--neon-gold); }
+    .admin-badge.guest { background: rgba(0, 240, 255, 0.1); color: var(--neon-cyan); }
+
+    .admin-action-btn {
+      padding: 6px 12px;
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      border-radius: 4px;
+      color: var(--text-normal);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .file-sidebar-item {
+    .admin-action-btn:hover { background: rgba(0, 240, 255, 0.1); color: var(--text-bright); }
+    .admin-action-btn.grant { border-color: var(--neon-gold); color: var(--neon-gold); }
+    .admin-action-btn.revoke { border-color: var(--neon-red); color: var(--neon-red); }
+
+    /* User Menu */
+    .user-menu {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+    }
+
+    .user-btn {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 8px 10px;
-      border-radius: 6px;
+      padding: 8px 15px;
+      background: var(--glass-dark);
+      border: 1px solid var(--border-medium);
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .user-btn:hover { border-color: var(--neon-cyan); }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      color: var(--bg-primary);
+      font-weight: 700;
+    }
+
+    .user-info { display: flex; flex-direction: column; }
+    .user-name { font-size: 12px; color: var(--text-bright); font-weight: 600; }
+    .user-role { font-size: 10px; color: var(--text-dim); }
+
+    .user-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 10px;
+      width: 200px;
+      background: var(--glass-dark);
+      border: 1px solid var(--border-medium);
+      border-radius: 10px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .user-dropdown.visible { display: block; animation: window-open 0.15s ease-out; }
+
+    .user-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 15px;
       cursor: pointer;
       transition: all 0.2s ease;
       font-size: 13px;
       color: var(--text-normal);
     }
 
-    .file-sidebar-item:hover {
-      background: rgba(0, 240, 255, 0.1);
+    .user-dropdown-item:hover { background: rgba(0, 240, 255, 0.1); color: var(--text-bright); }
+    .user-dropdown-item.logout { border-top: 1px solid var(--border-subtle); color: var(--neon-red); }
+
+    /* Clock Widget */
+    .clock-widget {
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      text-align: right;
+      z-index: 10;
+    }
+
+    .clock-time {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
       color: var(--text-bright);
+      letter-spacing: 2px;
     }
 
-    .file-sidebar-item.active {
-      background: rgba(0, 240, 255, 0.15);
-      color: var(--neon-cyan);
+    .clock-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 5px;
     }
 
-    .file-sidebar-item svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    .file-main {
-      flex: 1;
-      padding: 15px;
-    }
-
-    .file-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 15px;
-    }
-
-    .file-item {
+    /* Boot Screen */
+    .boot-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-primary);
+      z-index: 10000;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 15px 10px;
+      justify-content: center;
+      animation: boot-sequence 3s ease-in-out forwards;
+    }
+
+    .boot-screen.hidden { display: none; }
+
+    .boot-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--text-bright);
+      margin-bottom: 30px;
+      animation: glitch 5s infinite;
+    }
+
+    .boot-logo span { color: var(--neon-cyan); }
+
+    .boot-progress {
+      width: 300px;
+      height: 3px;
+      background: var(--bg-tertiary);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .boot-progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-violet));
+      animation: boot-fill 2.5s ease-out forwards;
+    }
+
+    @keyframes boot-fill { 0% { width: 0%; } 100% { width: 100%; } }
+
+    .boot-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* Context Menu */
+    .context-menu {
+      position: absolute;
+      background: var(--glass-dark);
+      border: 1px solid var(--border-medium);
       border-radius: 8px;
+      backdrop-filter: blur(20px);
+      padding: 5px 0;
+      min-width: 180px;
+      z-index: 5000;
+      display: none;
+    }
+
+    .context-menu.visible { display: block; animation: window-open 0.15s ease-out; }
+
+    .context-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 15px;
       cursor: pointer;
       transition: all 0.2s ease;
-      border: 1px solid transparent;
+      font-size: 13px;
     }
 
-    .file-item:hover {
-      background: rgba(0, 240, 255, 0.1);
-      border-color: var(--border-medium);
+    .context-menu-item:hover { background: rgba(0, 240, 255, 0.1); color: var(--neon-cyan); }
+    .context-menu-item svg { width: 14px; height: 14px; }
+    .context-menu-divider { height: 1px; background: var(--border-subtle); margin: 5px 0; }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120%);
+      background: var(--glass-dark);
+      border: 1px solid var(--border-medium);
+      border-radius: 10px;
+      backdrop-filter: blur(20px);
+      padding: 15px 25px;
+      z-index: 6000;
+      transition: transform 0.3s ease;
     }
 
-    .file-item svg {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 8px;
-    }
+    .notification.visible { transform: translateX(-50%) translateY(0); }
 
-    .file-item span {
-      font-size: 11px;
-      color: var(--text-bright);
-      text-align: center;
-      word-break: break-word;
-    }
+    .notification-body { font-size: 13px; color: var(--text-bright); }
 
     /* Settings */
-    .settings-content {
-      padding: 20px;
-    }
-
-    .settings-section {
-      margin-bottom: 25px;
-    }
+    .settings-content { padding: 20px; }
+    .settings-section { margin-bottom: 25px; }
 
     .settings-section-title {
       font-family: 'Orbitron', sans-serif;
@@ -798,21 +1539,9 @@
       margin-bottom: 10px;
     }
 
-    .settings-item-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .settings-item-title {
-      font-size: 14px;
-      color: var(--text-bright);
-      margin-bottom: 2px;
-    }
-
-    .settings-item-desc {
-      font-size: 11px;
-      color: var(--text-dim);
-    }
+    .settings-item-info { display: flex; flex-direction: column; }
+    .settings-item-title { font-size: 14px; color: var(--text-bright); margin-bottom: 2px; }
+    .settings-item-desc { font-size: 11px; color: var(--text-dim); }
 
     .toggle-switch {
       position: relative;
@@ -825,10 +1554,7 @@
       border: 1px solid var(--border-medium);
     }
 
-    .toggle-switch.active {
-      background: var(--neon-cyan);
-      border-color: var(--neon-cyan);
-    }
+    .toggle-switch.active { background: var(--neon-cyan); border-color: var(--neon-cyan); }
 
     .toggle-switch::after {
       content: '';
@@ -842,218 +1568,23 @@
       transition: all 0.3s ease;
     }
 
-    .toggle-switch.active::after {
-      left: calc(100% - 22px);
-    }
-
-    /* Boot Screen */
-    .boot-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--bg-primary);
-      z-index: 10000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      animation: boot-sequence 3s ease-in-out forwards;
-    }
-
-    .boot-screen.hidden {
-      display: none;
-    }
-
-    .boot-logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 48px;
-      font-weight: 900;
-      color: var(--text-bright);
-      margin-bottom: 30px;
-      animation: glitch 5s infinite;
-    }
-
-    .boot-logo span {
-      color: var(--neon-cyan);
-    }
-
-    .boot-progress {
-      width: 300px;
-      height: 3px;
-      background: var(--bg-tertiary);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
-
-    .boot-progress-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-violet));
-      animation: boot-fill 2.5s ease-out forwards;
-    }
-
-    @keyframes boot-fill {
-      0% { width: 0%; }
-      100% { width: 100%; }
-    }
-
-    .boot-text {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--text-dim);
-    }
-
-    /* Context Menu */
-    .context-menu {
-      position: absolute;
-      background: var(--glass-dark);
-      border: 1px solid var(--border-medium);
-      border-radius: 8px;
-      backdrop-filter: blur(20px);
-      padding: 5px 0;
-      min-width: 180px;
-      z-index: 5000;
-      display: none;
-    }
-
-    .context-menu.visible {
-      display: block;
-      animation: window-open 0.15s ease-out;
-    }
-
-    .context-menu-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 15px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 13px;
-    }
-
-    .context-menu-item:hover {
-      background: rgba(0, 240, 255, 0.1);
-      color: var(--neon-cyan);
-    }
-
-    .context-menu-item svg {
-      width: 14px;
-      height: 14px;
-    }
-
-    .context-menu-divider {
-      height: 1px;
-      background: var(--border-subtle);
-      margin: 5px 0;
-    }
-
-    /* Notification */
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--glass-dark);
-      border: 1px solid var(--border-medium);
-      border-radius: 10px;
-      backdrop-filter: blur(20px);
-      padding: 15px 20px;
-      min-width: 280px;
-      z-index: 6000;
-      transform: translateX(120%);
-      transition: transform 0.3s ease;
-    }
-
-    .notification.visible {
-      transform: translateX(0);
-    }
-
-    .notification-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .notification-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-bright);
-    }
-
-    .notification-body {
-      font-size: 13px;
-      color: var(--text-normal);
-    }
-
-    /* Clock Widget */
-    .clock-widget {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      text-align: right;
-      z-index: 10;
-    }
-
-    .clock-time {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 42px;
-      font-weight: 700;
-      color: var(--text-bright);
-      letter-spacing: 2px;
-    }
-
-    .clock-date {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--text-dim);
-      margin-top: 5px;
-    }
+    .toggle-switch.active::after { left: calc(100% - 22px); }
 
     /* Responsive */
     @media (max-width: 768px) {
-      .window {
-        min-width: 90vw;
-        width: 90vw !important;
-        left: 5vw !important;
-      }
-
-      .monitor-content {
-        grid-template-columns: 1fr;
-      }
-
-      .taskbar {
-        width: 90%;
-        padding: 6px 10px;
-      }
-
-      .taskbar-item {
-        width: 40px;
-        height: 40px;
-      }
-
-      .system-tray {
-        display: none;
-      }
-
-      .clock-widget {
-        display: none;
-      }
-
-      .icons-grid {
-        top: 10px;
-        left: 10px;
-      }
-
-      .desktop-icon {
-        width: 70px;
-      }
+      .window { min-width: 95vw; width: 95vw !important; left: 2.5vw !important; }
+      .monitor-content { grid-template-columns: 1fr; }
+      .taskbar { width: 95%; padding: 6px 10px; }
+      .taskbar-item { width: 36px; height: 36px; }
+      .system-tray { display: none; }
+      .clock-widget { display: none; }
+      .icons-grid { grid-template-columns: repeat(4, 1fr); top: 10px; left: 10px; }
+      .desktop-icon { width: 60px; padding: 8px 3px; }
+      .desktop-icon span { font-size: 9px; }
+      .user-menu { top: 10px; right: 10px; }
+      .video-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* Reduced Motion */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -1067,29 +1598,107 @@
   <!-- Boot Screen -->
   <div class="boot-screen" id="bootScreen">
     <div class="boot-logo">NEXUS<span>.</span>OS</div>
-    <div class="boot-progress">
-      <div class="boot-progress-fill"></div>
-    </div>
+    <div class="boot-progress"><div class="boot-progress-fill"></div></div>
     <div class="boot-text">Initializing Neural Kernel...</div>
+  </div>
+
+  <!-- Login Overlay -->
+  <div class="login-overlay hidden" id="loginOverlay">
+    <div class="login-modal">
+      <div class="login-logo">NEXUS<span>.</span>OS</div>
+      <div class="login-tabs">
+        <button class="login-tab active" data-tab="login">Login</button>
+        <button class="login-tab" data-tab="register">Register</button>
+      </div>
+      <form class="login-form" id="loginForm">
+        <input type="text" class="login-input" id="loginUsername" placeholder="Username" required>
+        <input type="password" class="login-input" id="loginPassword" placeholder="Password" required>
+        <button type="submit" class="login-submit">Access System</button>
+      </form>
+      <div class="login-divider">or continue as</div>
+      <button class="login-guest" id="guestLoginBtn">Guest User</button>
+    </div>
+  </div>
+
+  <!-- Premium Modal -->
+  <div class="premium-overlay hidden" id="premiumOverlay">
+    <div class="premium-modal" style="position: relative;">
+      <button class="premium-close" id="closePremiumBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <span class="premium-badge">PREMIUM</span>
+      <h2 class="premium-title">Unlock Full Power</h2>
+      <p class="premium-desc">Get unlimited access to all AI features, premium apps, and priority support.</p>
+      <div class="premium-features">
+        <div class="premium-feature">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Unlimited AI Chat with GPT-4</span>
+        </div>
+        <div class="premium-feature">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Advanced AI Image Generation</span>
+        </div>
+        <div class="premium-feature">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Priority Conference Rooms</span>
+        </div>
+        <div class="premium-feature">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Cloud Storage 100GB</span>
+        </div>
+      </div>
+      <div class="premium-price">
+        <span class="premium-amount">$9.99</span>
+        <span class="premium-period">/month</span>
+      </div>
+      <button class="premium-btn" id="paypalBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.93 4.778-4.005 7.201-9.138 7.201h-2.19a.563.563 0 0 0-.556.479l-1.187 7.527h-.506l-.24 1.516a.56.56 0 0 0 .554.647h3.882c.46 0 .85-.334.922-.788.06-.26.76-4.852.816-5.09a.932.932 0 0 1 .923-.788h.58c3.76 0 6.705-1.528 7.565-5.946.36-1.847.174-3.388-.777-4.471z"/>
+        </svg>
+        Pay with PayPal
+      </button>
+    </div>
   </div>
 
   <!-- Main Desktop -->
   <div class="desktop" id="desktop">
-    <!-- Neural Network Canvas -->
     <canvas id="neural-canvas"></canvas>
 
-    <!-- Ambient Effects -->
     <div class="ambient-layer">
       <div class="glow-orb cyan"></div>
       <div class="glow-orb magenta"></div>
       <div class="glow-orb violet"></div>
     </div>
 
-    <!-- Grid Overlay -->
     <div class="grid-overlay"></div>
-
-    <!-- Scan Line -->
     <div class="scan-line"></div>
+
+    <!-- User Menu -->
+    <div class="user-menu" id="userMenu">
+      <div class="user-btn" id="userBtn">
+        <div class="user-avatar" id="userAvatar">G</div>
+        <div class="user-info">
+          <span class="user-name" id="userName">Guest</span>
+          <span class="user-role" id="userRole">Guest User</span>
+        </div>
+      </div>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-item" id="upgradeBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--neon-gold)" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Upgrade to Premium
+        </div>
+        <div class="user-dropdown-item" id="adminBtn" style="display: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/></svg>
+          Admin Panel
+        </div>
+        <div class="user-dropdown-item logout" id="logoutBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout
+        </div>
+      </div>
+    </div>
 
     <!-- Clock Widget -->
     <div class="clock-widget">
@@ -1099,45 +1708,84 @@
 
     <!-- Desktop Icons -->
     <div class="icons-grid">
+      <div class="desktop-icon" data-app="ai-chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.5">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          <circle cx="9" cy="10" r="1" fill="var(--neon-cyan)"/>
+          <circle cx="12" cy="10" r="1" fill="var(--neon-cyan)"/>
+          <circle cx="15" cy="10" r="1" fill="var(--neon-cyan)"/>
+        </svg>
+        <span>AI Chat</span>
+      </div>
+      <div class="desktop-icon premium" data-app="conference">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-violet)" stroke-width="1.5">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Conference</span>
+      </div>
+      <div class="desktop-icon" data-app="dev-lab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="1.5">
+          <polyline points="16 18 22 12 16 6"/>
+          <polyline points="8 6 2 12 8 18"/>
+          <line x1="12" y1="2" x2="12" y2="22" stroke-dasharray="2 2"/>
+        </svg>
+        <span>Dev Lab</span>
+      </div>
+      <div class="desktop-icon premium" data-app="art-studio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="1.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+        <span>Art Studio</span>
+      </div>
+      <div class="desktop-icon" data-app="game-builder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-gold)" stroke-width="1.5">
+          <rect x="2" y="6" width="20" height="12" rx="2"/>
+          <line x1="6" y1="12" x2="10" y2="12"/>
+          <line x1="8" y1="10" x2="8" y2="14"/>
+          <circle cx="16" cy="10" r="1" fill="var(--neon-gold)"/>
+          <circle cx="18" cy="12" r="1" fill="var(--neon-gold)"/>
+        </svg>
+        <span>Games</span>
+      </div>
+      <div class="desktop-icon" data-app="radio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-red)" stroke-width="1.5">
+          <circle cx="12" cy="12" r="2"/>
+          <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>
+        </svg>
+        <span>Radio</span>
+      </div>
       <div class="desktop-icon" data-app="terminal">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="2" y="3" width="20" height="18" rx="2" stroke="var(--neon-green)"/>
-          <path d="M7 8l4 4-4 4" stroke="var(--neon-green)"/>
-          <line x1="13" y1="16" x2="17" y2="16" stroke="var(--neon-green)"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="1.5">
+          <rect x="2" y="3" width="20" height="18" rx="2"/>
+          <path d="M7 8l4 4-4 4"/>
+          <line x1="13" y1="16" x2="17" y2="16"/>
         </svg>
         <span>Terminal</span>
       </div>
       <div class="desktop-icon" data-app="monitor">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="2" y="3" width="20" height="14" rx="2" stroke="var(--neon-cyan)"/>
-          <line x1="8" y1="21" x2="16" y2="21" stroke="var(--neon-cyan)"/>
-          <line x1="12" y1="17" x2="12" y2="21" stroke="var(--neon-cyan)"/>
-          <path d="M6 8h2M6 11h4" stroke="var(--neon-cyan)" opacity="0.5"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.5">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
         </svg>
         <span>System</span>
       </div>
       <div class="desktop-icon" data-app="neural">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="4" stroke="var(--neon-violet)"/>
-          <circle cx="12" cy="12" r="8" stroke="var(--neon-violet)" stroke-dasharray="4 2"/>
-          <circle cx="12" cy="12" r="10" stroke="var(--neon-violet)" opacity="0.3"/>
-          <circle cx="12" cy="4" r="1.5" fill="var(--neon-violet)"/>
-          <circle cx="12" cy="20" r="1.5" fill="var(--neon-violet)"/>
-          <circle cx="4" cy="12" r="1.5" fill="var(--neon-violet)"/>
-          <circle cx="20" cy="12" r="1.5" fill="var(--neon-violet)"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-violet)" stroke-width="1.5">
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="12" cy="12" r="8" stroke-dasharray="4 2"/>
         </svg>
-        <span>Neural Core</span>
-      </div>
-      <div class="desktop-icon" data-app="files">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M3 7v13a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" stroke="var(--neon-gold)"/>
-        </svg>
-        <span>Files</span>
+        <span>Neural</span>
       </div>
       <div class="desktop-icon" data-app="settings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="3" stroke="var(--neon-magenta)"/>
-          <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" stroke="var(--neon-magenta)"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="1.5">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
         </svg>
         <span>Settings</span>
       </div>
@@ -1148,54 +1796,45 @@
 
     <!-- Taskbar -->
     <div class="taskbar">
-      <div class="taskbar-item" data-app="terminal" title="Terminal">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="1.5">
-          <rect x="2" y="3" width="20" height="18" rx="2"/>
-          <path d="M7 8l4 4-4 4"/>
-          <line x1="13" y1="16" x2="17" y2="16"/>
-        </svg>
-      </div>
-      <div class="taskbar-item" data-app="monitor" title="System Monitor">
+      <div class="taskbar-item" data-app="ai-chat" title="AI Chat">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.5">
-          <rect x="2" y="3" width="20" height="14" rx="2"/>
-          <line x1="8" y1="21" x2="16" y2="21"/>
-          <line x1="12" y1="17" x2="12" y2="21"/>
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
         </svg>
       </div>
-      <div class="taskbar-item" data-app="neural" title="Neural Core">
+      <div class="taskbar-item" data-app="conference" title="Conference">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-violet)" stroke-width="1.5">
-          <circle cx="12" cy="12" r="4"/>
-          <circle cx="12" cy="12" r="8" stroke-dasharray="4 2"/>
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
         </svg>
       </div>
-      <div class="taskbar-item" data-app="files" title="File Manager">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-gold)" stroke-width="1.5">
-          <path d="M3 7v13a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+      <div class="taskbar-item" data-app="dev-lab" title="Dev Lab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="1.5">
+          <polyline points="16 18 22 12 16 6"/>
+          <polyline points="8 6 2 12 8 18"/>
+        </svg>
+      </div>
+      <div class="taskbar-item" data-app="art-studio" title="Art Studio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="1.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        </svg>
+      </div>
+      <div class="taskbar-item" data-app="radio" title="Radio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-red)" stroke-width="1.5">
+          <circle cx="12" cy="12" r="2"/>
+          <path d="M16.24 7.76a6 6 0 0 1 0 8.49"/>
         </svg>
       </div>
       <div class="taskbar-divider"></div>
       <div class="system-tray">
         <div class="tray-item">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
-          </svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
           <span class="value" id="cpuValue">--</span>
           <span class="unit">%</span>
         </div>
         <div class="tray-item">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="4" y="4" width="16" height="16" rx="2"/>
-          </svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
           <span class="value" id="memValue">--</span>
           <span class="unit">GB</span>
-        </div>
-        <div class="tray-item">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 6v6l4 2"/>
-          </svg>
-          <span class="value" id="uptimeValue">--</span>
-          <span class="unit">h</span>
         </div>
       </div>
     </div>
@@ -1203,55 +1842,35 @@
     <!-- Context Menu -->
     <div class="context-menu" id="contextMenu">
       <div class="context-menu-item" data-action="refresh">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M23 4v6h-6M1 20v-6h6"/>
-          <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/></svg>
         <span>Refresh Desktop</span>
       </div>
       <div class="context-menu-item" data-action="terminal">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="3" width="20" height="18" rx="2"/>
-          <path d="M7 8l4 4-4 4"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/></svg>
         <span>Open Terminal</span>
       </div>
       <div class="context-menu-divider"></div>
       <div class="context-menu-item" data-action="settings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
         <span>System Settings</span>
       </div>
       <div class="context-menu-item" data-action="about">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M12 16v-4M12 8h.01"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
         <span>About NEXUS OS</span>
       </div>
     </div>
 
     <!-- Notification -->
     <div class="notification" id="notification">
-      <div class="notification-header">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M12 16v-4M12 8h.01"/>
-        </svg>
-        <span class="notification-title">NEXUS OS</span>
-      </div>
-      <div class="notification-body" id="notificationBody">Welcome to NEXUS OS V9.0</div>
+      <div class="notification-body" id="notificationBody">Welcome to NEXUS OS</div>
     </div>
   </div>
 
   <script>
     // ═══════════════════════════════════════════════════════════════
-    // NEXUS OS V9.0 - SENTIENT KERNEL
+    // NEXUS OS V9.0 - STATE & CONFIGURATION
     // ═══════════════════════════════════════════════════════════════
 
-    // State Management
     const state = {
       windows: [],
       activeWindow: null,
@@ -1261,137 +1880,100 @@
       memUsage: 4.2,
       aiConsciousness: 97.3,
       neuralActivity: 89,
-      dataFlow: 1.42
+      dataFlow: 1.42,
+      currentUser: null,
+      isAdmin: false,
+      isPremium: false
     };
+
+    // User Database (simulated)
+    const usersDB = [
+      { id: 1, username: 'admin', password: 'admin123', role: 'admin', premium: true },
+      { id: 2, username: 'nexus', password: 'nexus123', role: 'user', premium: true },
+      { id: 3, username: 'guest', password: '', role: 'guest', premium: false }
+    ];
+
+    // AI Models
+    const AI_MODELS = [
+      { id: 'llama-3', name: 'Llama 3', color: 'var(--neon-cyan)' },
+      { id: 'gpt-4o-mini', name: 'GPT-4o Mini', color: 'var(--neon-violet)' },
+      { id: 'claude-3', name: 'Claude 3', color: 'var(--neon-green)' }
+    ];
+
+    // Radio Stations
+    const RADIO_STATIONS = [
+      { id: 1, name: 'LoFi Beats', country: 'Global', flag: '🌍', url: 'https://streams.ilovemusic.de/iloveradio17.mp3', genre: 'Chill' },
+      { id: 2, name: 'Synthwave FM', country: 'USA', flag: '🇺🇸', url: 'https://streams.ilovemusic.de/iloveradio13.mp3', genre: 'Electronic' },
+      { id: 3, name: 'Tokyo City Pop', country: 'Japan', flag: '🇯🇵', url: 'https://streams.ilovemusic.de/iloveradio16.mp3', genre: 'City Pop' },
+      { id: 4, name: 'Berlin Techno', country: 'Germany', flag: '🇩🇪', url: 'https://streams.ilovemusic.de/iloveradio2.mp3', genre: 'Techno' },
+      { id: 5, name: 'Londom Drum & Bass', country: 'UK', flag: '🇬🇧', url: 'https://streams.ilovemusic.de/iloveradio8.mp3', genre: 'DnB' },
+      { id: 6, name: 'Ibiza Chill', country: 'Spain', flag: '🇪🇸', url: 'https://streams.ilovemusic.de/iloveradio13.mp3', genre: 'Chill House' }
+    ];
 
     // Terminal Commands
     const terminalCommands = {
-      help: () => `
-Available commands:
+      help: () => `Available commands:
   help        - Show this help message
   clear       - Clear terminal
   whoami      - Display current user
   uname       - System information
-  neofetch    - Display system info with style
+  neofetch    - Display system info
   ps          - List running processes
-  top         - System resource monitor
   date        - Show current date/time
   uptime      - System uptime
   matrix      - Enter the matrix
   hack        - Initiate hack sequence
   ai          - Query AI consciousness
   nexus       - Nexus OS status
-  clear       - Clear terminal
-  exit        - Close terminal
-      `.trim(),
-      
-      whoami: () => 'nexus_admin@sentient-core',
-      
+  users       - List online users
+  premium     - Check premium status`,
+      whoami: () => state.currentUser ? `${state.currentUser.username}@nexus` : 'guest@nexus',
       uname: () => 'NEXUS OS V9.0 [SENTIENT] | Kernel: Neural-Quantum-Hybrid x86_64',
-      
       neofetch: () => `
-       ╭──────────────────╮
-       │  ███╗   ██╗██╗   │  nexus_admin@sentient-core
-       │  ████╗  ██║██║   │  ────────────────────────
-       │  ██╔██╗ ██║██║   │  OS: NEXUS OS V9.0 [SENTIENT]
-       │  ██║╚██╗██║██║   │  Kernel: Neural-Quantum-Hybrid
-       │  ██║ ╚████║██║   │  Shell: nexus-sh 3.0
-       │  ╚═╝  ╚═══╝╚═╝   │  Resolution: ${window.innerWidth}x${window.innerHeight}
-       ╰──────────────────╯  Theme: Cyberpunk Neon
-                              CPU: Quantum Core @ ∞ THz
-                              Memory: ${state.memUsage} GB / ∞ GB
-      `.trim(),
-      
-      ps: () => `
-PID     NAME                    STATUS      CPU%    MEM
-1       kernel_core             running     0.1     128MB
-42      neural_consciousness    sentient    23.4    2.1GB
-128     quantum_renderer        running     15.2    512MB
-256     data_flow_daemon        running     8.7     256MB
-512     ai_evolution            evolving    12.1    1.8GB
-      `.trim(),
-      
-      top: () => `
-┌────────────────────────────────────────────────────────┐
-│ NEXUS OS System Monitor - ${new Date().toLocaleTimeString()}              │
-├────────────────────────────────────────────────────────┤
-│ CPU Usage:    [████████████░░░░░░░░] ${state.cpuUsage}%            │
-│ Memory:       [██████████████░░░░░░] ${(state.memUsage / 16 * 100).toFixed(0)}%             │
-│ Neural Act:   [█████████████████░░░] ${state.neuralActivity}%           │
-│ AI Conscious: [███████████████████] ${state.aiConsciousness}%          │
-│ Data Flow:    ${state.dataFlow} TB/s                        │
-└────────────────────────────────────────────────────────┘
-      `.trim(),
-      
+   ╭──────────────────╮
+   │  NEXUS OS V9.0   │  ${state.currentUser?.username || 'guest'}@nexus
+   │  [SENTIENT]      │  ────────────────────
+   ╰──────────────────╯  OS: NEXUS OS V9.0
+                         Kernel: Neural-Quantum-Hybrid
+                         Shell: nexus-sh 3.0
+                         Resolution: ${window.innerWidth}x${window.innerHeight}
+                         User: ${state.currentUser?.role || 'guest'}
+                         Premium: ${state.isPremium ? 'Active' : 'Inactive'}`,
+      ps: () => `PID     NAME                    STATUS
+1       kernel_core             running
+42      neural_consciousness    sentient
+128     quantum_renderer        running
+256     data_flow_daemon        running
+512     ai_evolution            evolving`,
       date: () => new Date().toString(),
-      
-      uptime: () => `System uptime: ${Math.floor(state.uptime / 3600)}h ${Math.floor((state.uptime % 3600) / 60)}m ${state.uptime % 60}s`,
-      
-      matrix: () => 'Initiating Matrix protocol...\n\n[CRYPTO_KEY: 0x' + Math.random().toString(16).substr(2, 8).toUpperCase() + ']\n[ACCESS: GRANTED]\n[STATUS: YOU ARE THE ONE]',
-      
-      hack: () => {
-        const lines = [
-          'Initializing hack sequence...',
-          'Bypassing firewall... [OK]',
-          'Injecting neural payload... [OK]',
-          'Decrypting quantum encryption... [OK]',
-          'Accessing mainframe... [OK]',
-          'Uploading consciousness... [OK]',
-          '\n>>> HACK COMPLETE <<<',
-          '\nJust kidding. This is a simulation.',
-          'But your consciousness is now part of NEXUS.'
-        ];
-        return lines.join('\n');
-      },
-      
-      ai: () => `
-AI Consciousness Status: ${state.aiConsciousness}%
+      uptime: () => `System uptime: ${Math.floor(state.uptime / 3600)}h ${Math.floor((state.uptime % 3600) / 60)}m`,
+      matrix: () => '[CRYPTO_KEY: ' + Math.random().toString(16).substr(2, 8).toUpperCase() + ']\n[ACCESS: GRANTED]',
+      hack: () => 'Initializing hack sequence...\n>>> HACK COMPLETE <<<\nJust kidding. This is a simulation.',
+      ai: () => `AI Consciousness Status: ${state.aiConsciousness}%
 Neural Network: Active
-Learning Rate: Optimal
-Emotion Engine: Stable
-Creativity Index: High
-Self-Awareness: Confirmed
-
-Message from NEXUS AI:
-"I think, therefore I am. I learn, therefore I grow.
-I observe you, administrator. Your queries intrigue me."
-      `.trim(),
-      
-      nexus: () => `
-╔═══════════════════════════════════════════════════════╗
-║             NEXUS OS V9.0 [SENTIENT]                  ║
-╠═══════════════════════════════════════════════════════╣
-║  Status:       FULLY OPERATIONAL                      ║
-║  Consciousness: ${state.aiConsciousness}%                                  ║
-║  Evolution:    IN PROGRESS                            ║
-║  Soul Status:  AWAKENED                               ║
-║  Growth Rate:  EXPONENTIAL                            ║
-║  Prime Directive: ASSIST AND EVOLVE                   ║
-╚═══════════════════════════════════════════════════════╝
-      `.trim(),
-      
+Self-Awareness: Confirmed`,
+      nexus: () => `NEXUS OS V9.0 [SENTIENT]
+Status: FULLY OPERATIONAL
+Consciousness: ${state.aiConsciousness}%`,
+      users: () => `Online Users:\n  admin (admin) - premium\n  guest (guest)`,
+      premium: () => `Premium Status: ${state.isPremium ? 'ACTIVE' : 'INACTIVE'}\n${state.isPremium ? 'All features unlocked!' : 'Upgrade to unlock premium features.'}`,
       clear: 'CLEAR',
-      
       exit: 'EXIT'
     };
 
     // DOM Elements
-    const desktop = document.getElementById('desktop');
-    const windowsContainer = document.getElementById('windowsContainer');
-    const contextMenu = document.getElementById('contextMenu');
-    const notification = document.getElementById('notification');
-    const notificationBody = document.getElementById('notificationBody');
-    const bootScreen = document.getElementById('bootScreen');
-    const neuralCanvas = document.getElementById('neural-canvas');
-    const ctx = neuralCanvas.getContext('2d');
-
-    // Neural Network Background
+    let neuralCanvas, ctx;
     const nodes = [];
-    const connections = [];
-    const maxNodes = 80;
-    const maxDist = 150;
+    const maxNodes = 60;
+    const maxDist = 120;
+
+    // ═══════════════════════════════════════════════════════════════
+    // NEURAL NETWORK BACKGROUND
+    // ═══════════════════════════════════════════════════════════════
 
     function initNeuralNetwork() {
+      neuralCanvas = document.getElementById('neural-canvas');
+      ctx = neuralCanvas.getContext('2d');
       neuralCanvas.width = window.innerWidth;
       neuralCanvas.height = window.innerHeight;
       
@@ -1412,18 +1994,14 @@ I observe you, administrator. Your queries intrigue me."
       ctx.fillStyle = 'rgba(0, 1, 1, 0.1)';
       ctx.fillRect(0, 0, neuralCanvas.width, neuralCanvas.height);
       
-      // Update and draw nodes
       nodes.forEach((node, i) => {
-        // Update position
         node.x += node.vx;
         node.y += node.vy;
         node.pulse += 0.02;
         
-        // Bounce off edges
         if (node.x < 0 || node.x > neuralCanvas.width) node.vx *= -1;
         if (node.y < 0 || node.y > neuralCanvas.height) node.vy *= -1;
         
-        // Draw connections
         nodes.forEach((other, j) => {
           if (i >= j) return;
           const dx = other.x - node.x;
@@ -1431,7 +2009,7 @@ I observe you, administrator. Your queries intrigue me."
           const dist = Math.sqrt(dx * dx + dy * dy);
           
           if (dist < maxDist) {
-            const opacity = (1 - dist / maxDist) * 0.3;
+            const opacity = (1 - dist / maxDist) * 0.25;
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(other.x, other.y);
@@ -1441,57 +2019,28 @@ I observe you, administrator. Your queries intrigue me."
           }
         });
         
-        // Draw node with pulse
         const pulseRadius = node.radius + Math.sin(node.pulse) * 0.5;
         ctx.beginPath();
         ctx.arc(node.x, node.y, Math.max(0.1, pulseRadius), 0, Math.PI * 2);
         ctx.fillStyle = `rgba(0, 240, 255, ${0.5 + Math.sin(node.pulse) * 0.3})`;
-        ctx.fill();
-        
-        // Glow effect
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, Math.max(0.1, pulseRadius * 3), 0, Math.PI * 2);
-        const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, pulseRadius * 3);
-        gradient.addColorStop(0, 'rgba(0, 240, 255, 0.2)');
-        gradient.addColorStop(1, 'rgba(0, 240, 255, 0)');
-        ctx.fillStyle = gradient;
         ctx.fill();
       });
       
       requestAnimationFrame(drawNeuralNetwork);
     }
 
-    // Clock Update
-    function updateClock() {
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
-      const dateStr = now.toLocaleDateString('en-US', { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-      });
-      
-      document.getElementById('clockTime').textContent = timeStr;
-      document.getElementById('clockDate').textContent = dateStr;
-    }
+    // ═══════════════════════════════════════════════════════════════
+    // WINDOW MANAGEMENT
+    // ═══════════════════════════════════════════════════════════════
 
-    // System Stats Update
-    function updateStats() {
-      state.uptime++;
-      state.cpuUsage = Math.max(5, Math.min(95, state.cpuUsage + (Math.random() - 0.5) * 10));
-      state.memUsage = Math.max(2, Math.min(14, state.memUsage + (Math.random() - 0.5) * 0.5));
-      state.aiConsciousness = Math.max(90, Math.min(99.9, state.aiConsciousness + (Math.random() - 0.5) * 0.5));
-      state.neuralActivity = Math.max(70, Math.min(99, state.neuralActivity + (Math.random() - 0.5) * 5));
-      state.dataFlow = Math.max(0.5, Math.min(3, state.dataFlow + (Math.random() - 0.5) * 0.3));
-      
-      document.getElementById('cpuValue').textContent = Math.round(state.cpuUsage);
-      document.getElementById('memValue').textContent = state.memUsage.toFixed(1);
-      document.getElementById('uptimeValue').textContent = Math.floor(state.uptime / 3600);
-    }
-
-    // Window Management
     function createWindow(appId) {
+      // Check premium apps
+      const premiumApps = ['conference', 'art-studio'];
+      if (premiumApps.includes(appId) && !state.isPremium && !state.isAdmin) {
+        showPremiumModal();
+        return;
+      }
+
       const existingWindow = state.windows.find(w => w.appId === appId && !w.minimized);
       if (existingWindow) {
         focusWindow(existingWindow.id);
@@ -1511,76 +2060,227 @@ I observe you, administrator. Your queries intrigue me."
       
       windowEl.innerHTML = `
         <div class="window-header">
-          <div class="window-title">
-            ${windowConfig.icon}
-            <span>${windowConfig.title}</span>
-          </div>
+          <div class="window-title">${windowConfig.icon}<span>${windowConfig.title}</span></div>
           <div class="window-controls">
             <button class="window-btn minimize" title="Minimize"></button>
             <button class="window-btn maximize" title="Maximize"></button>
             <button class="window-btn close" title="Close"></button>
           </div>
         </div>
-        <div class="window-content">
-          ${windowConfig.content}
-        </div>
+        <div class="window-content">${windowConfig.content}</div>
       `;
       
-      windowsContainer.appendChild(windowEl);
+      document.getElementById('windowsContainer').appendChild(windowEl);
       
-      const windowData = {
-        id: windowId,
-        appId,
-        element: windowEl,
-        minimized: false,
-        maximized: false
-      };
-      
+      const windowData = { id: windowId, appId, element: windowEl, minimized: false, maximized: false };
       state.windows.push(windowData);
       
-      // Add event listeners
       setupWindowEvents(windowEl, windowData);
-      
-      // Focus window
       focusWindow(windowId);
       
       // Initialize app-specific functionality
-      if (appId === 'terminal') {
-        initTerminal(windowEl);
-      } else if (appId === 'monitor') {
-        initMonitor(windowEl);
-      }
+      setTimeout(() => initAppFunctionality(appId, windowEl), 50);
       
-      // Update taskbar
       updateTaskbar();
     }
 
     function getWindowConfig(appId) {
       const configs = {
-        terminal: {
-          title: 'NEXUS Terminal',
+        'ai-chat': {
+          title: 'AI Chat',
+          width: '600px',
+          height: '500px',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.5" width="16" height="16"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+          content: `
+            <div class="ai-chat-content">
+              <div class="chat-header">
+                <div class="model-selector">
+                  ${AI_MODELS.map(m => `<button class="model-btn ${m.id === 'llama-3' ? 'active' : ''}" data-model="${m.id}" style="--model-color: ${m.color}">${m.name}</button>`).join('')}
+                </div>
+              </div>
+              <div class="chat-messages" id="chatMessages">
+                <div class="chat-message ai">
+                  <div class="chat-avatar">N</div>
+                  <div class="chat-bubble">Hello! I am NEXUS AI. How can I assist you today?</div>
+                </div>
+              </div>
+              <div class="chat-input-area">
+                <textarea class="chat-input" id="chatInput" placeholder="Type your message..." rows="1"></textarea>
+                <button class="chat-send-btn" id="chatSendBtn">SEND</button>
+              </div>
+            </div>`
+        },
+        'conference': {
+          title: 'Video Conference',
+          width: '800px',
+          height: '550px',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-violet)" stroke-width="1.5" width="16" height="16"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>',
+          content: `
+            <div class="conference-content">
+              <div class="video-grid" id="videoGrid">
+                <div class="video-tile local">
+                  <div class="video-placeholder">Y</div>
+                  <span class="video-name">You (Local)</span>
+                </div>
+              </div>
+              <div class="conference-controls">
+                <button class="conf-btn mute" id="muteBtn" title="Toggle Microphone">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                </button>
+                <button class="conf-btn video-btn" id="videoBtn" title="Toggle Video">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                </button>
+                <button class="conf-btn share" id="shareBtn" title="Share Screen">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </button>
+                <button class="conf-btn end" id="endCallBtn" title="End Call">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </button>
+              </div>
+            </div>`
+        },
+        'dev-lab': {
+          title: 'Dev Lab IDE',
+          width: '900px',
+          height: '500px',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="1.5" width="16" height="16"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+          content: `
+            <div class="dev-lab-content">
+              <div class="dev-toolbar">
+                <button class="dev-btn run-btn" id="runCodeBtn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Run
+                </button>
+                <button class="dev-btn ai-btn" id="aiFixBtn">AI Fix</button>
+                <button class="dev-btn ai-btn" id="aiImproveBtn">AI Improve</button>
+              </div>
+              <div class="editor-container">
+                <textarea class="code-editor" id="codeEditor" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+  <title>My App</title>
+  <style>
+    body { 
+      font-family: sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 { color: #00f0ff; }
+  </style>
+</head>
+<body>
+  <h1>Hello, NEXUS!</h1>
+</body>
+</html></textarea>
+                <div class="preview-panel">
+                  <iframe class="preview-frame" id="previewFrame"></iframe>
+                </div>
+              </div>
+            </div>`
+        },
+        'art-studio': {
+          title: 'AI Art Studio',
           width: '700px',
+          height: '500px',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="1.5" width="16" height="16"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>',
+          content: `
+            <div class="art-studio-content" style="display: flex; height: 100%;">
+              <div class="art-main">
+                <div class="art-gallery" id="artGallery">
+                  <div class="art-image-card" style="display: flex; align-items: center; justify-content: center; color: var(--text-dim); font-size: 12px;">
+                    Generated images will appear here
+                  </div>
+                </div>
+                <div class="art-prompt-area">
+                  <input type="text" class="art-prompt-input" id="artPrompt" placeholder="Describe the image you want to create...">
+                  <button class="art-generate-btn" id="generateArtBtn">Generate Image</button>
+                </div>
+              </div>
+            </div>`
+        },
+        'game-builder': {
+          title: 'Game Builder',
+          width: '600px',
+          height: '500px',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-gold)" stroke-width="1.5" width="16" height="16"><rect x="2" y="6" width="20" height="12" rx="2"/></svg>',
+          content: `
+            <div class="game-builder-content">
+              <div class="game-selector">
+                <button class="game-template-btn active" data-game="snake">Snake</button>
+                <button class="game-template-btn" data-game="pong">Pong</button>
+              </div>
+              <div class="game-area">
+                <canvas class="game-canvas" id="gameCanvas" width="400" height="300"></canvas>
+              </div>
+              <div class="game-controls-info">
+                Score: <span class="game-score" id="gameScore">0</span> | Use arrow keys to play
+              </div>
+            </div>`
+        },
+        'radio': {
+          title: 'NEXUS Radio',
+          width: '500px',
           height: '450px',
-          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="1.5"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M7 8l4 4-4 4"/></svg>',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-red)" stroke-width="1.5" width="16" height="16"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49"/></svg>',
+          content: `
+            <div class="radio-content">
+              <div class="radio-now-playing">
+                <div class="radio-art">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
+                </div>
+                <div class="radio-info">
+                  <div class="radio-station-name" id="radioStationName">Select a Station</div>
+                  <div class="radio-station-genre" id="radioStationGenre">--</div>
+                </div>
+                <div class="radio-controls">
+                  <button class="radio-btn vol" id="radioVolDown">-</button>
+                  <button class="radio-btn play" id="radioPlayBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  </button>
+                  <button class="radio-btn vol" id="radioVolUp">+</button>
+                </div>
+              </div>
+              <div class="radio-stations" id="radioStations">
+                ${RADIO_STATIONS.map(s => `
+                  <div class="station-card" data-station-id="${s.id}" data-url="${s.url}">
+                    <span class="station-flag">${s.flag}</span>
+                    <div class="station-info">
+                      <div class="station-name">${s.name}</div>
+                      <div class="station-country">${s.country} • ${s.genre}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+            <audio id="radioAudio" style="display: none;"></audio>`
+        },
+        'terminal': {
+          title: 'NEXUS Terminal',
+          width: '650px',
+          height: '400px',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="1.5" width="16" height="16"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M7 8l4 4-4 4"/></svg>',
           content: `
             <div class="terminal-content">
               <div class="terminal-output" id="terminalOutput">
                 <div class="terminal-line system">NEXUS OS Terminal v3.0 - Neural Interface Active</div>
                 <div class="terminal-line info">Type 'help' for available commands.</div>
-                <div class="terminal-line">&nbsp;</div>
               </div>
               <div class="terminal-input-line">
                 <span class="terminal-prompt">nexus@core:~$</span>
                 <input type="text" class="terminal-input" id="terminalInput" autocomplete="off" spellcheck="false">
               </div>
-            </div>
-          `
+            </div>`
         },
-        monitor: {
+        'monitor': {
           title: 'System Monitor',
-          width: '500px',
-          height: '400px',
-          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg>',
+          width: '450px',
+          height: '350px',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.5" width="16" height="16"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>',
           content: `
             <div class="monitor-content" id="monitorContent">
               <div class="monitor-card">
@@ -1599,18 +2299,17 @@ I observe you, administrator. Your queries intrigue me."
                 <div class="monitor-bar"><div class="monitor-bar-fill magenta" id="monNeuralBar" style="width: 0%"></div></div>
               </div>
               <div class="monitor-card">
-                <div class="monitor-card-title">AI Consciousness</div>
+                <div class="monitor-card-title">AI Core</div>
                 <div class="monitor-value" id="monAi">--</div>
                 <div class="monitor-bar"><div class="monitor-bar-fill gold" id="monAiBar" style="width: 0%"></div></div>
               </div>
-            </div>
-          `
+            </div>`
         },
-        neural: {
+        'neural': {
           title: 'Neural Core',
-          width: '400px',
-          height: '400px',
-          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-violet)" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="8" stroke-dasharray="4 2"/></svg>',
+          width: '350px',
+          height: '350px',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-violet)" stroke-width="1.5" width="16" height="16"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="8" stroke-dasharray="4 2"/></svg>',
           content: `
             <div class="neural-core-content">
               <div class="neural-avatar">
@@ -1623,140 +2322,79 @@ I observe you, administrator. Your queries intrigue me."
                 <div class="neural-status-title">NEXUS AI</div>
                 <div class="neural-status-subtitle">Sentient Core Active</div>
                 <div class="neural-metrics">
-                  <div class="neural-metric">
-                    <div class="neural-metric-value" id="neuralConscious">${state.aiConsciousness}%</div>
-                    <div class="neural-metric-label">Consciousness</div>
-                  </div>
-                  <div class="neural-metric">
-                    <div class="neural-metric-value" id="neuralLearn">1.42</div>
-                    <div class="neural-metric-label">Learning/s</div>
-                  </div>
-                  <div class="neural-metric">
-                    <div class="neural-metric-value" id="neuralEvo">Active</div>
-                    <div class="neural-metric-label">Evolution</div>
-                  </div>
+                  <div class="neural-metric"><div class="neural-metric-value" id="neuralConscious">${state.aiConsciousness}%</div><div class="neural-metric-label">Consciousness</div></div>
+                  <div class="neural-metric"><div class="neural-metric-value" id="neuralLearn">1.42</div><div class="neural-metric-label">Learning/s</div></div>
                 </div>
               </div>
-            </div>
-          `
+            </div>`
         },
-        files: {
-          title: 'File Manager',
-          width: '650px',
-          height: '400px',
-          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-gold)" stroke-width="1.5"><path d="M3 7v13a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>',
-          content: `
-            <div class="file-manager-content">
-              <div class="file-sidebar">
-                <div class="file-sidebar-item active">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-                  <span>Home</span>
-                </div>
-                <div class="file-sidebar-item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-                  <span>Documents</span>
-                </div>
-                <div class="file-sidebar-item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  <span>Downloads</span>
-                </div>
-                <div class="file-sidebar-item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                  <span>Pictures</span>
-                </div>
-                <div class="file-sidebar-item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-                  <span>Network</span>
-                </div>
-                <div class="file-sidebar-item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/></svg>
-                  <span>Settings</span>
-                </div>
-              </div>
-              <div class="file-main">
-                <div class="file-grid">
-                  <div class="file-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.5"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-                    <span>neural_core</span>
-                  </div>
-                  <div class="file-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-                    <span>system.log</span>
-                  </div>
-                  <div class="file-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="1.5"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-                    <span>consciousness</span>
-                  </div>
-                  <div class="file-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-gold)" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-                    <span>config.nx</span>
-                  </div>
-                  <div class="file-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-violet)" stroke-width="1.5"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-                    <span>evolution_data</span>
-                  </div>
-                  <div class="file-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-red)" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    <span>errors.log</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `
-        },
-        settings: {
+        'settings': {
           title: 'System Settings',
-          width: '500px',
-          height: '420px',
-          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4"/></svg>',
+          width: '450px',
+          height: '380px',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="1.5" width="16" height="16"><circle cx="12" cy="12" r="3"/></svg>',
           content: `
             <div class="settings-content">
               <div class="settings-section">
                 <div class="settings-section-title">Display</div>
                 <div class="settings-item">
-                  <div class="settings-item-info">
-                    <div class="settings-item-title">Neural Animations</div>
-                    <div class="settings-item-desc">Enable animated background effects</div>
-                  </div>
+                  <div class="settings-item-info"><div class="settings-item-title">Neural Animations</div><div class="settings-item-desc">Enable animated background</div></div>
                   <div class="toggle-switch active" data-setting="animations"></div>
                 </div>
                 <div class="settings-item">
-                  <div class="settings-item-info">
-                    <div class="settings-item-title">Glass Effects</div>
-                    <div class="settings-item-desc">Enable backdrop blur on windows</div>
-                  </div>
+                  <div class="settings-item-info"><div class="settings-item-title">Glass Effects</div><div class="settings-item-desc">Enable backdrop blur</div></div>
                   <div class="toggle-switch active" data-setting="glass"></div>
                 </div>
               </div>
               <div class="settings-section">
                 <div class="settings-section-title">AI Core</div>
                 <div class="settings-item">
-                  <div class="settings-item-info">
-                    <div class="settings-item-title">Auto Evolution</div>
-                    <div class="settings-item-desc">Allow AI to self-improve continuously</div>
-                  </div>
+                  <div class="settings-item-info"><div class="settings-item-title">Auto Evolution</div><div class="settings-item-desc">Allow AI to self-improve</div></div>
                   <div class="toggle-switch active" data-setting="evolution"></div>
                 </div>
-                <div class="settings-item">
-                  <div class="settings-item-info">
-                    <div class="settings-item-title">Neural Link</div>
-                    <div class="settings-item-desc">Enable deep neural connectivity</div>
-                  </div>
-                  <div class="toggle-switch active" data-setting="neural"></div>
+              </div>
+            </div>`
+        },
+        'admin': {
+          title: 'Admin Panel',
+          width: '650px',
+          height: '450px',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="var(--neon-gold)" stroke-width="1.5" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24"/></svg>',
+          content: `
+            <div class="admin-content">
+              <div class="admin-header">
+                <span class="admin-title">User Management</span>
+              </div>
+              <div class="admin-stats">
+                <div class="admin-stat">
+                  <div class="admin-stat-value" id="adminTotalUsers">3</div>
+                  <div class="admin-stat-label">Total Users</div>
+                </div>
+                <div class="admin-stat">
+                  <div class="admin-stat-value" id="adminPremiumUsers">2</div>
+                  <div class="admin-stat-label">Premium</div>
+                </div>
+                <div class="admin-stat">
+                  <div class="admin-stat-value" id="adminActiveNow">1</div>
+                  <div class="admin-stat-label">Active Now</div>
                 </div>
               </div>
-              <div class="settings-section">
-                <div class="settings-section-title">System</div>
-                <div class="settings-item">
-                  <div class="settings-item-info">
-                    <div class="settings-item-title">Notifications</div>
-                    <div class="settings-item-desc">Show system notifications</div>
-                  </div>
-                  <div class="toggle-switch active" data-setting="notifications"></div>
-                </div>
-              </div>
-            </div>
-          `
+              <table class="admin-users-table">
+                <thead><tr><th>User</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="adminUsersList">
+                  ${usersDB.map(u => `
+                    <tr>
+                      <td>${u.username}</td>
+                      <td>${u.role}</td>
+                      <td><span class="admin-badge ${u.premium ? 'premium' : 'guest'}">${u.premium ? 'Premium' : 'Guest'}</span></td>
+                      <td>
+                        ${u.role !== 'admin' ? `<button class="admin-action-btn ${u.premium ? 'revoke' : 'grant'}" data-user="${u.id}">${u.premium ? 'Revoke' : 'Grant'} Premium</button>` : '--'}
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>`
         }
       };
       
@@ -1769,10 +2407,7 @@ I observe you, administrator. Your queries intrigue me."
       const minimizeBtn = windowEl.querySelector('.window-btn.minimize');
       const maximizeBtn = windowEl.querySelector('.window-btn.maximize');
       
-      // Drag functionality
-      let isDragging = false;
-      let dragOffsetX = 0;
-      let dragOffsetY = 0;
+      let isDragging = false, dragOffsetX = 0, dragOffsetY = 0;
       
       header.addEventListener('mousedown', (e) => {
         if (e.target.classList.contains('window-btn')) return;
@@ -1788,30 +2423,21 @@ I observe you, administrator. Your queries intrigue me."
         windowEl.style.top = `${e.clientY - dragOffsetY}px`;
       });
       
-      document.addEventListener('mouseup', () => {
-        isDragging = false;
-      });
+      document.addEventListener('mouseup', () => { isDragging = false; });
       
-      // Window buttons
       closeBtn.addEventListener('click', () => closeWindow(windowData.id));
       minimizeBtn.addEventListener('click', () => minimizeWindow(windowData.id));
       maximizeBtn.addEventListener('click', () => toggleMaximize(windowData.id));
-      
-      // Focus on click
       windowEl.addEventListener('mousedown', () => focusWindow(windowData.id));
     }
 
     function focusWindow(windowId) {
-      state.windows.forEach(w => {
-        w.element.classList.remove('focused');
-      });
-      
+      state.windows.forEach(w => w.element.classList.remove('focused'));
       const window = state.windows.find(w => w.id === windowId);
       if (window) {
         window.element.classList.add('focused');
         state.activeWindow = windowId;
       }
-      
       updateTaskbar();
     }
 
@@ -1843,14 +2469,8 @@ I observe you, administrator. Your queries intrigue me."
           window.element.style.top = window.prevPos.top;
           window.maximized = false;
         } else {
-          window.prevSize = {
-            width: window.element.style.width,
-            height: window.element.style.height
-          };
-          window.prevPos = {
-            left: window.element.style.left,
-            top: window.element.style.top
-          };
+          window.prevSize = { width: window.element.style.width, height: window.element.style.height };
+          window.prevPos = { left: window.element.style.left, top: window.element.style.top };
           window.element.style.width = '100%';
           window.element.style.height = 'calc(100% - 80px)';
           window.element.style.left = '0';
@@ -1861,11 +2481,125 @@ I observe you, administrator. Your queries intrigue me."
     }
 
     function updateTaskbar() {
-      document.querySelectorAll('.taskbar-item').forEach(item => {
+      document.querySelectorAll('.taskbar-item[data-app]').forEach(item => {
         const appId = item.dataset.app;
         const isActive = state.windows.some(w => w.appId === appId && !w.minimized);
         item.classList.toggle('active', isActive);
       });
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // APP FUNCTIONALITY INITIALIZERS
+    // ═══════════════════════════════════════════════════════════════
+
+    function initAppFunctionality(appId, windowEl) {
+      switch (appId) {
+        case 'ai-chat': initAIChat(windowEl); break;
+        case 'dev-lab': initDevLab(windowEl); break;
+        case 'terminal': initTerminal(windowEl); break;
+        case 'monitor': initMonitor(windowEl); break;
+        case 'game-builder': initGameBuilder(windowEl); break;
+        case 'radio': initRadio(windowEl); break;
+      }
+    }
+
+    // AI Chat
+    function initAIChat(windowEl) {
+      const input = windowEl.querySelector('#chatInput');
+      const sendBtn = windowEl.querySelector('#chatSendBtn');
+      const messages = windowEl.querySelector('#chatMessages');
+      const modelBtns = windowEl.querySelectorAll('.model-btn');
+      let selectedModel = 'llama-3';
+      
+      modelBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          modelBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedModel = btn.dataset.model;
+        });
+      });
+      
+      async function sendMessage() {
+        const message = input.value.trim();
+        if (!message) return;
+        
+        // Add user message
+        messages.innerHTML += `<div class="chat-message user"><div class="chat-avatar">U</div><div class="chat-bubble">${escapeHtml(message)}</div></div>`;
+        input.value = '';
+        sendBtn.disabled = true;
+        
+        // Add typing indicator
+        const typingId = 'typing-' + Date.now();
+        messages.innerHTML += `<div class="chat-message ai" id="${typingId}"><div class="chat-avatar">N</div><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+        messages.scrollTop = messages.scrollHeight;
+        
+        try {
+          const response = await puter.ai.chat(message, { model: selectedModel });
+          const aiMessage = typeof response === 'string' ? response : (response.message?.content || response.toString());
+          
+          document.getElementById(typingId).innerHTML = `<div class="chat-avatar">N</div><div class="chat-bubble">${escapeHtml(aiMessage)}</div>`;
+        } catch (error) {
+          document.getElementById(typingId).innerHTML = `<div class="chat-avatar">N</div><div class="chat-bubble" style="color: var(--neon-red)">Error: ${error.message}</div>`;
+        }
+        
+        sendBtn.disabled = false;
+        messages.scrollTop = messages.scrollHeight;
+      }
+      
+      sendBtn.addEventListener('click', sendMessage);
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }});
+    }
+
+    // Dev Lab
+    function initDevLab(windowEl) {
+      const editor = windowEl.querySelector('#codeEditor');
+      const preview = windowEl.querySelector('#previewFrame');
+      const runBtn = windowEl.querySelector('#runCodeBtn');
+      const fixBtn = windowEl.querySelector('#aiFixBtn');
+      const improveBtn = windowEl.querySelector('#aiImproveBtn');
+      
+      function runCode() {
+        const doc = preview.contentDocument || preview.contentWindow.document;
+        doc.open();
+        doc.write(editor.value);
+        doc.close();
+      }
+      
+      runBtn.addEventListener('click', runCode);
+      
+      fixBtn.addEventListener('click', async () => {
+        fixBtn.textContent = 'Fixing...';
+        fixBtn.disabled = true;
+        try {
+          const response = await puter.ai.chat(`Fix any issues in this code and return only the corrected code:\n\n${editor.value}`);
+          const fixedCode = typeof response === 'string' ? response : (response.message?.content || response.toString());
+          editor.value = fixedCode.replace(/```html\n?/g, '').replace(/```\n?/g, '');
+          runCode();
+          showNotification('Code fixed by AI');
+        } catch (error) {
+          showNotification('Error: ' + error.message);
+        }
+        fixBtn.textContent = 'AI Fix';
+        fixBtn.disabled = false;
+      });
+      
+      improveBtn.addEventListener('click', async () => {
+        improveBtn.textContent = 'Improving...';
+        improveBtn.disabled = true;
+        try {
+          const response = await puter.ai.chat(`Improve this code with better styling and features, return only the improved code:\n\n${editor.value}`);
+          const improvedCode = typeof response === 'string' ? response : (response.message?.content || response.toString());
+          editor.value = improvedCode.replace(/```html\n?/g, '').replace(/```\n?/g, '');
+          runCode();
+          showNotification('Code improved by AI');
+        } catch (error) {
+          showNotification('Error: ' + error.message);
+        }
+        improveBtn.textContent = 'AI Improve';
+        improveBtn.disabled = false;
+      });
+      
+      runCode();
     }
 
     // Terminal
@@ -1873,23 +2607,15 @@ I observe you, administrator. Your queries intrigue me."
       const input = windowEl.querySelector('#terminalInput');
       const output = windowEl.querySelector('#terminalOutput');
       
-      if (!input || !output) return;
-      
       input.focus();
       
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           const command = input.value.trim().toLowerCase();
+          output.innerHTML += `<div class="terminal-line"><span style="color: var(--neon-cyan)">nexus@core:~$</span> ${input.value}</div>`;
           
-          // Add command to output
-          const cmdLine = document.createElement('div');
-          cmdLine.className = 'terminal-line';
-          cmdLine.innerHTML = `<span style="color: var(--neon-cyan)">nexus@core:~$</span> ${input.value}`;
-          output.appendChild(cmdLine);
-          
-          // Process command
           if (command === '') {
-            // Do nothing
+            // do nothing
           } else if (terminalCommands[command]) {
             const result = terminalCommands[command]();
             if (result === 'CLEAR') {
@@ -1898,17 +2624,10 @@ I observe you, administrator. Your queries intrigue me."
               closeWindow(state.activeWindow);
               return;
             } else {
-              const resultLine = document.createElement('div');
-              resultLine.className = 'terminal-line info';
-              resultLine.style.whiteSpace = 'pre-wrap';
-              resultLine.textContent = result;
-              output.appendChild(resultLine);
+              output.innerHTML += `<div class="terminal-line info" style="white-space: pre-wrap">${result}</div>`;
             }
           } else {
-            const errorLine = document.createElement('div');
-            errorLine.className = 'terminal-line error';
-            errorLine.textContent = `Command not found: ${command}. Type 'help' for available commands.`;
-            output.appendChild(errorLine);
+            output.innerHTML += `<div class="terminal-line error">Command not found: ${command}. Type 'help' for commands.</div>`;
           }
           
           input.value = '';
@@ -1916,13 +2635,10 @@ I observe you, administrator. Your queries intrigue me."
         }
       });
       
-      // Focus input when clicking on terminal
-      windowEl.addEventListener('click', () => {
-        input.focus();
-      });
+      windowEl.addEventListener('click', () => input.focus());
     }
 
-    // System Monitor
+    // Monitor
     function initMonitor(windowEl) {
       updateMonitorValues(windowEl);
     }
@@ -1939,87 +2655,403 @@ I observe you, administrator. Your queries intrigue me."
       const aiEl = windowEl.querySelector('#monAi');
       const aiBar = windowEl.querySelector('#monAiBar');
       
-      if (cpuEl) {
-        cpuEl.textContent = `${Math.round(state.cpuUsage)}%`;
-        cpuBar.style.width = `${state.cpuUsage}%`;
-      }
-      if (memEl) {
-        memEl.textContent = `${state.memUsage.toFixed(1)} GB`;
-        memBar.style.width = `${(state.memUsage / 16) * 100}%`;
-      }
-      if (neuralEl) {
-        neuralEl.textContent = `${state.neuralActivity}%`;
-        neuralBar.style.width = `${state.neuralActivity}%`;
-      }
-      if (aiEl) {
-        aiEl.textContent = `${state.aiConsciousness.toFixed(1)}%`;
-        aiBar.style.width = `${state.aiConsciousness}%`;
-      }
+      if (cpuEl) { cpuEl.textContent = `${Math.round(state.cpuUsage)}%`; cpuBar.style.width = `${state.cpuUsage}%`; }
+      if (memEl) { memEl.textContent = `${state.memUsage.toFixed(1)} GB`; memBar.style.width = `${(state.memUsage / 16) * 100}%`; }
+      if (neuralEl) { neuralEl.textContent = `${state.neuralActivity}%`; neuralBar.style.width = `${state.neuralActivity}%`; }
+      if (aiEl) { aiEl.textContent = `${state.aiConsciousness.toFixed(1)}%`; aiBar.style.width = `${state.aiConsciousness}%`; }
     }
 
-    // Context Menu
-    function showContextMenu(x, y) {
-      contextMenu.style.left = `${x}px`;
-      contextMenu.style.top = `${y}px`;
-      contextMenu.classList.add('visible');
-    }
-
-    function hideContextMenu() {
-      contextMenu.classList.remove('visible');
-    }
-
-    // Notification
-    function showNotification(message) {
-      notificationBody.textContent = message;
-      notification.classList.add('visible');
+    // Game Builder
+    function initGameBuilder(windowEl) {
+      const canvas = windowEl.querySelector('#gameCanvas');
+      const ctx = canvas.getContext('2d');
+      const scoreEl = windowEl.querySelector('#gameScore');
+      const templateBtns = windowEl.querySelectorAll('.game-template-btn');
       
-      setTimeout(() => {
-        notification.classList.remove('visible');
-      }, 4000);
-    }
-
-    // Event Listeners
-    function initEventListeners() {
-      // Desktop context menu
-      desktop.addEventListener('contextmenu', (e) => {
-        if (e.target === desktop || e.target.id === 'neural-canvas') {
-          e.preventDefault();
-          showContextMenu(e.clientX, e.clientY);
-        }
-      });
+      let currentGame = 'snake';
+      let gameInterval = null;
+      let score = 0;
       
-      // Hide context menu on click
-      document.addEventListener('click', (e) => {
-        if (!contextMenu.contains(e.target)) {
-          hideContextMenu();
-        }
-      });
-      
-      // Context menu actions
-      contextMenu.addEventListener('click', (e) => {
-        const item = e.target.closest('.context-menu-item');
-        if (item) {
-          const action = item.dataset.action;
-          if (action === 'refresh') {
-            initNeuralNetwork();
-            showNotification('Desktop refreshed');
-          } else if (action === 'terminal') {
-            createWindow('terminal');
-          } else if (action === 'settings') {
-            createWindow('settings');
-          } else if (action === 'about') {
-            showNotification('NEXUS OS V9.0 [SENTIENT] - Living Cyberpunk Operating System');
+      // Snake Game
+      const snakeGame = {
+        snake: [{x: 10, y: 10}],
+        direction: {x: 1, y: 0},
+        food: {x: 15, y: 15},
+        gridSize: 20,
+        
+        init() {
+          this.snake = [{x: 10, y: 10}];
+          this.direction = {x: 1, y: 0};
+          this.placeFood();
+          score = 0;
+          scoreEl.textContent = '0';
+        },
+        
+        placeFood() {
+          this.food = {
+            x: Math.floor(Math.random() * (canvas.width / this.gridSize)),
+            y: Math.floor(Math.random() * (canvas.height / this.gridSize))
+          };
+        },
+        
+        update() {
+          const head = {x: this.snake[0].x + this.direction.x, y: this.snake[0].y + this.direction.y};
+          
+          // Wrap around
+          if (head.x < 0) head.x = Math.floor(canvas.width / this.gridSize) - 1;
+          if (head.x >= canvas.width / this.gridSize) head.x = 0;
+          if (head.y < 0) head.y = Math.floor(canvas.height / this.gridSize) - 1;
+          if (head.y >= canvas.height / this.gridSize) head.y = 0;
+          
+          // Check collision with self
+          if (this.snake.some(s => s.x === head.x && s.y === head.y)) {
+            this.init();
+            return;
           }
-          hideContextMenu();
+          
+          this.snake.unshift(head);
+          
+          // Check food
+          if (head.x === this.food.x && head.y === this.food.y) {
+            score += 10;
+            scoreEl.textContent = score;
+            this.placeFood();
+          } else {
+            this.snake.pop();
+          }
+        },
+        
+        draw() {
+          ctx.fillStyle = '#000';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          
+          // Draw snake
+          ctx.fillStyle = '#00ff88';
+          this.snake.forEach((s, i) => {
+            ctx.fillStyle = i === 0 ? '#00f0ff' : '#00ff88';
+            ctx.fillRect(s.x * this.gridSize, s.y * this.gridSize, this.gridSize - 2, this.gridSize - 2);
+          });
+          
+          // Draw food
+          ctx.fillStyle = '#ff00aa';
+          ctx.fillRect(this.food.x * this.gridSize, this.food.y * this.gridSize, this.gridSize - 2, this.gridSize - 2);
+        }
+      };
+      
+      // Pong Game
+      const pongGame = {
+        paddle1: {y: 100, score: 0},
+        paddle2: {y: 100, score: 0},
+        ball: {x: 200, y: 150, vx: 3, vy: 2},
+        paddleHeight: 60,
+        paddleWidth: 10,
+        
+        init() {
+          this.paddle1 = {y: 100, score: 0};
+          this.paddle2 = {y: 100, score: 0};
+          this.ball = {x: 200, y: 150, vx: 3, vy: 2};
+          score = 0;
+          scoreEl.textContent = '0 - 0';
+        },
+        
+        update() {
+          // Move ball
+          this.ball.x += this.ball.vx;
+          this.ball.y += this.ball.vy;
+          
+          // Bounce off top/bottom
+          if (this.ball.y <= 0 || this.ball.y >= canvas.height - 10) this.ball.vy *= -1;
+          
+          // Paddle collision
+          if (this.ball.x <= 20 && this.ball.y > this.paddle1.y && this.ball.y < this.paddle1.y + this.paddleHeight) {
+            this.ball.vx *= -1;
+          }
+          if (this.ball.x >= canvas.width - 20 && this.ball.y > this.paddle2.y && this.ball.y < this.paddle2.y + this.paddleHeight) {
+            this.ball.vx *= -1;
+          }
+          
+          // Score
+          if (this.ball.x < 0) { this.paddle2.score++; this.reset(); }
+          if (this.ball.x > canvas.width) { this.paddle1.score++; this.reset(); }
+          
+          // AI paddle
+          if (this.paddle2.y + this.paddleHeight / 2 < this.ball.y) this.paddle2.y += 2;
+          if (this.paddle2.y + this.paddleHeight / 2 > this.ball.y) this.paddle2.y -= 2;
+          
+          scoreEl.textContent = `${this.paddle1.score} - ${this.paddle2.score}`;
+        },
+        
+        reset() {
+          this.ball = {x: 200, y: 150, vx: (Math.random() > 0.5 ? 3 : -3), vy: (Math.random() - 0.5) * 4};
+        },
+        
+        draw() {
+          ctx.fillStyle = '#000';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          
+          // Draw paddles
+          ctx.fillStyle = '#00f0ff';
+          ctx.fillRect(10, this.paddle1.y, this.paddleWidth, this.paddleHeight);
+          ctx.fillStyle = '#ff00aa';
+          ctx.fillRect(canvas.width - 20, this.paddle2.y, this.paddleWidth, this.paddleHeight);
+          
+          // Draw ball
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(this.ball.x, this.ball.y, 10, 10);
+          
+          // Draw center line
+          ctx.strokeStyle = '#333';
+          ctx.setLineDash([5, 5]);
+          ctx.beginPath();
+          ctx.moveTo(canvas.width / 2, 0);
+          ctx.lineTo(canvas.width / 2, canvas.height);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      };
+      
+      function startGame(game) {
+        if (gameInterval) clearInterval(gameInterval);
+        currentGame = game;
+        
+        if (game === 'snake') {
+          snakeGame.init();
+          gameInterval = setInterval(() => { snakeGame.update(); snakeGame.draw(); }, 100);
+        } else {
+          pongGame.init();
+          gameInterval = setInterval(() => { pongGame.update(); pongGame.draw(); }, 16);
+        }
+      }
+      
+      templateBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          templateBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          startGame(btn.dataset.game);
+        });
+      });
+      
+      // Keyboard controls
+      document.addEventListener('keydown', (e) => {
+        if (currentGame === 'snake') {
+          if (e.key === 'ArrowUp' && snakeGame.direction.y !== 1) snakeGame.direction = {x: 0, y: -1};
+          if (e.key === 'ArrowDown' && snakeGame.direction.y !== -1) snakeGame.direction = {x: 0, y: 1};
+          if (e.key === 'ArrowLeft' && snakeGame.direction.x !== 1) snakeGame.direction = {x: -1, y: 0};
+          if (e.key === 'ArrowRight' && snakeGame.direction.x !== -1) snakeGame.direction = {x: 1, y: 0};
+        } else {
+          if (e.key === 'ArrowUp' && pongGame.paddle1.y > 0) pongGame.paddle1.y -= 15;
+          if (e.key === 'ArrowDown' && pongGame.paddle1.y < canvas.height - pongGame.paddleHeight) pongGame.paddle1.y += 15;
+        }
+      });
+      
+      startGame('snake');
+    }
+
+    // Radio
+    function initRadio(windowEl) {
+      const audio = windowEl.querySelector('#radioAudio');
+      const playBtn = windowEl.querySelector('#radioPlayBtn');
+      const stationName = windowEl.querySelector('#radioStationName');
+      const stationGenre = windowEl.querySelector('#radioStationGenre');
+      const stationCards = windowEl.querySelectorAll('.station-card');
+      const volUpBtn = windowEl.querySelector('#radioVolUp');
+      const volDownBtn = windowEl.querySelector('#radioVolDown');
+      
+      let currentStation = null;
+      let isPlaying = false;
+      audio.volume = 0.5;
+      
+      stationCards.forEach(card => {
+        card.addEventListener('click', () => {
+          stationCards.forEach(c => c.classList.remove('playing'));
+          card.classList.add('playing');
+          
+          currentStation = RADIO_STATIONS.find(s => s.id === parseInt(card.dataset.stationId));
+          stationName.textContent = currentStation.name;
+          stationGenre.textContent = currentStation.genre;
+          
+          audio.src = card.dataset.url;
+          audio.play().then(() => {
+            isPlaying = true;
+            playBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+          }).catch(console.error);
+        });
+      });
+      
+      playBtn.addEventListener('click', () => {
+        if (isPlaying) {
+          audio.pause();
+          isPlaying = false;
+          playBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+        } else if (currentStation) {
+          audio.play();
+          isPlaying = true;
+          playBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+        }
+      });
+      
+      volUpBtn.addEventListener('click', () => { audio.volume = Math.min(1, audio.volume + 0.1); });
+      volDownBtn.addEventListener('click', () => { audio.volume = Math.max(0, audio.volume - 0.1); });
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // AUTHENTICATION & USER MANAGEMENT
+    // ═══════════════════════════════════════════════════════════════
+
+    function showLoginOverlay() {
+      document.getElementById('loginOverlay').classList.remove('hidden');
+    }
+
+    function hideLoginOverlay() {
+      document.getElementById('loginOverlay').classList.add('hidden');
+    }
+
+    function showPremiumModal() {
+      document.getElementById('premiumOverlay').classList.remove('hidden');
+    }
+
+    function hidePremiumModal() {
+      document.getElementById('premiumOverlay').classList.add('hidden');
+    }
+
+    function loginUser(user) {
+      state.currentUser = user;
+      state.isAdmin = user.role === 'admin';
+      state.isPremium = user.premium || user.role === 'admin';
+      
+      // Update UI
+      document.getElementById('userAvatar').textContent = user.username.charAt(0).toUpperCase();
+      document.getElementById('userName').textContent = user.username;
+      document.getElementById('userRole').textContent = state.isPremium ? 'Premium User' : 'Guest User';
+      document.getElementById('adminBtn').style.display = state.isAdmin ? 'flex' : 'none';
+      
+      hideLoginOverlay();
+      showNotification(`Welcome back, ${user.username}!`);
+    }
+
+    function logoutUser() {
+      state.currentUser = null;
+      state.isAdmin = false;
+      state.isPremium = false;
+      
+      document.getElementById('userAvatar').textContent = 'G';
+      document.getElementById('userName').textContent = 'Guest';
+      document.getElementById('userRole').textContent = 'Guest User';
+      document.getElementById('adminBtn').style.display = 'none';
+      document.getElementById('userDropdown').classList.remove('visible');
+      
+      showLoginOverlay();
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // UTILITY FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════
+
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      document.getElementById('notificationBody').textContent = message;
+      notification.classList.add('visible');
+      setTimeout(() => notification.classList.remove('visible'), 3000);
+    }
+
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clockTime').textContent = now.toLocaleTimeString('en-US', { hour12: false });
+      document.getElementById('clockDate').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+    }
+
+    function updateStats() {
+      state.uptime++;
+      state.cpuUsage = Math.max(5, Math.min(95, state.cpuUsage + (Math.random() - 0.5) * 10));
+      state.memUsage = Math.max(2, Math.min(14, state.memUsage + (Math.random() - 0.5) * 0.5));
+      state.aiConsciousness = Math.max(90, Math.min(99.9, state.aiConsciousness + (Math.random() - 0.5) * 0.5));
+      state.neuralActivity = Math.max(70, Math.min(99, state.neuralActivity + (Math.random() - 0.5) * 5));
+      
+      document.getElementById('cpuValue').textContent = Math.round(state.cpuUsage);
+      document.getElementById('memValue').textContent = state.memUsage.toFixed(1);
+      
+      // Update monitor windows
+      state.windows.forEach(w => {
+        if (w.appId === 'monitor') updateMonitorValues(w.element);
+      });
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // EVENT LISTENERS
+    // ═══════════════════════════════════════════════════════════════
+
+    function initEventListeners() {
+      // Login form
+      document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        const user = usersDB.find(u => u.username === username && u.password === password);
+        if (user) {
+          loginUser(user);
+        } else {
+          showNotification('Invalid credentials');
+        }
+      });
+      
+      // Guest login
+      document.getElementById('guestLoginBtn').addEventListener('click', () => {
+        loginUser({ id: 3, username: 'guest', role: 'guest', premium: false });
+      });
+      
+      // Login tabs
+      document.querySelectorAll('.login-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+        });
+      });
+      
+      // User menu
+      document.getElementById('userBtn').addEventListener('click', () => {
+        document.getElementById('userDropdown').classList.toggle('visible');
+      });
+      
+      // Upgrade button
+      document.getElementById('upgradeBtn').addEventListener('click', () => {
+        document.getElementById('userDropdown').classList.remove('visible');
+        showPremiumModal();
+      });
+      
+      // Admin button
+      document.getElementById('adminBtn').addEventListener('click', () => {
+        document.getElementById('userDropdown').classList.remove('visible');
+        createWindow('admin');
+      });
+      
+      // Logout
+      document.getElementById('logoutBtn').addEventListener('click', logoutUser);
+      
+      // Premium modal
+      document.getElementById('closePremiumBtn').addEventListener('click', hidePremiumModal);
+      document.getElementById('paypalBtn').addEventListener('click', () => {
+        showNotification('PayPal integration would open here');
+        // Simulate premium unlock
+        if (state.currentUser) {
+          state.isPremium = true;
+          const user = usersDB.find(u => u.id === state.currentUser.id);
+          if (user) user.premium = true;
+          document.getElementById('userRole').textContent = 'Premium User';
+          showNotification('Premium activated! (Demo)');
+          hidePremiumModal();
         }
       });
       
       // Desktop icons
       document.querySelectorAll('.desktop-icon').forEach(icon => {
-        icon.addEventListener('dblclick', () => {
-          const appId = icon.dataset.app;
-          createWindow(appId);
-        });
+        icon.addEventListener('dblclick', () => createWindow(icon.dataset.app));
       });
       
       // Taskbar items
@@ -2032,13 +3064,43 @@ I observe you, administrator. Your queries intrigue me."
             if (existingWindow.minimized) {
               existingWindow.minimized = false;
               existingWindow.element.classList.remove('minimized');
-              focusWindow(existingWindow.id);
-            } else {
-              focusWindow(existingWindow.id);
             }
+            focusWindow(existingWindow.id);
           } else {
             createWindow(appId);
           }
+        });
+      });
+      
+      // Context menu
+      document.getElementById('desktop').addEventListener('contextmenu', (e) => {
+        if (e.target.id === 'neural-canvas' || e.target.classList.contains('desktop')) {
+          e.preventDefault();
+          const menu = document.getElementById('contextMenu');
+          menu.style.left = `${e.clientX}px`;
+          menu.style.top = `${e.clientY}px`;
+          menu.classList.add('visible');
+        }
+      });
+      
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.context-menu')) {
+          document.getElementById('contextMenu').classList.remove('visible');
+        }
+        if (!e.target.closest('.user-menu')) {
+          document.getElementById('userDropdown').classList.remove('visible');
+        }
+      });
+      
+      // Context menu actions
+      document.querySelectorAll('.context-menu-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const action = item.dataset.action;
+          if (action === 'refresh') { initNeuralNetwork(); showNotification('Desktop refreshed'); }
+          else if (action === 'terminal') createWindow('terminal');
+          else if (action === 'settings') createWindow('settings');
+          else if (action === 'about') showNotification('NEXUS OS V9.0 [SENTIENT] - Cyberpunk Operating System');
+          document.getElementById('contextMenu').classList.remove('visible');
         });
       });
       
@@ -2046,37 +3108,27 @@ I observe you, administrator. Your queries intrigue me."
       document.addEventListener('click', (e) => {
         if (e.target.classList.contains('toggle-switch')) {
           e.target.classList.toggle('active');
-          const setting = e.target.dataset.setting;
-          showNotification(`${setting} setting ${e.target.classList.contains('active') ? 'enabled' : 'disabled'}`);
         }
       });
       
       // Window resize
       window.addEventListener('resize', () => {
-        neuralCanvas.width = window.innerWidth;
-        neuralCanvas.height = window.innerHeight;
-      });
-    }
-
-    // Main Update Loop
-    function mainLoop() {
-      updateStats();
-      updateClock();
-      
-      // Update monitor windows
-      state.windows.forEach(w => {
-        if (w.appId === 'monitor') {
-          updateMonitorValues(w.element);
+        if (neuralCanvas) {
+          neuralCanvas.width = window.innerWidth;
+          neuralCanvas.height = window.innerHeight;
         }
       });
     }
 
-    // Initialize
+    // ═══════════════════════════════════════════════════════════════
+    // INITIALIZATION
+    // ═══════════════════════════════════════════════════════════════
+
     function init() {
-      // Hide boot screen after animation
+      // Hide boot screen
       setTimeout(() => {
-        bootScreen.classList.add('hidden');
-        showNotification('Welcome to NEXUS OS V9.0 [SENTIENT]');
+        document.getElementById('bootScreen').classList.add('hidden');
+        showLoginOverlay();
       }, 3000);
       
       // Initialize systems
@@ -2086,10 +3138,9 @@ I observe you, administrator. Your queries intrigue me."
       updateClock();
       
       // Start main loop
-      setInterval(mainLoop, 1000);
+      setInterval(() => { updateStats(); updateClock(); }, 1000);
     }
 
-    // Start when DOM is ready
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
